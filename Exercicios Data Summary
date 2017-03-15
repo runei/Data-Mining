@@ -1,0 +1,7 @@
+1 - summary(algae$season)
+2 - mean(algae$a5)
+3 - mean(algae$NO3, na.rm=TRUE)
+4 - boxplot.stats(algae$a2)$stats
+	 subset(algae, a2 > 28.2)
+5 - aggregate(algae$a1, list(algae$season), summary, na.rm = TRUE)
+6 - group_by(algae, season) %>% summarise(avgNO3 = mean(NO3, na.rm=TRUE)) %>% arrange(desc(avgNO3))

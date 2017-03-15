@@ -1,0 +1,512 @@
+policeData$Offense_Type[policeData$Offense_Type=="1.000000"]
+policeData$Offense_Type[policeData$Offense_Type=="-"]
+subset(policeData$Offense_Type)
+subset(policeData$Offense_Type)
+table(policeData$Offense_Type)
+group_by(policeData,Hour)%>%summarise(no=sum(n_offenses))
+group_by(policeData,Hour)%>%summarise(no=sum(n_offenses))%>%arrange(decres(no))
+group_by(policeData,Hour)%>%summarise(no=sum(n_offenses))%>%arrange(decre(no))
+group_by(policeData,Hour)%>%summarise(no=sum(n_offenses))%>%arrange(desc(no))
+head(group_by(policeData,Hour)%>%summarise(no=sum(n_offenses))%>%arrange(desc(no)))
+group_by(policeData,wday(Date,label=TRUE))%>%summarise(sum=sum(n_offenses))%>%arrange(desc(sum))
+group_by(policeData,wday(Date,label=TRUE))%>%summarise(sum=sum(n_offenses))
+sum(shift1$n_offenses)
+table(shift1$Offense_Type)
+table(shift1$Offense_Type)
+table(shift2$Offense_Type)
+table(shift3$Offense_Type)
+table(policeData$Offense_Type)
+# Since the value is not an offense type, we have to replace the value one with "NA"
+policeData$Offense_Type[policeData$Offense_Type=="1.000000"]<-"-"
+table(shift1$Offense_Type)
+table(shift2$Offense_Type)
+table(shift3$Offense_Type)
+shift1<-policeData[policeData$Hour>=8&policeData$Hour<12,]
+shift2<-policeData[policeData$Hour>=12&policeData$Hour<19,]
+shift3<-rbind(policeData[policeData$Hour>19,],policeData[policeData$Hour<8,])
+table(shift1$Offense_Type)
+table(shift2$Offense_Type)
+table(shift3$Offense_Type)
+table(shift1$Offense_Type)
+table(shift2$Offense_Type)
+table(shift3$Offense_Type, na.rm=TRUE)
+table(shift1$Offense_Type)
+table(shift2$Offense_Type)
+table(shift3$Offense_Type, na.rm=TRUE)
+policeData$Offense_Type[policeData$Offense_Type=="1.000000"]<-NA
+shift1<-policeData[policeData$Hour>=8&policeData$Hour<12,]
+shift2<-policeData[policeData$Hour>=12&policeData$Hour<19,]
+shift3<-rbind(policeData[policeData$Hour>19,],policeData[policeData$Hour<8,])
+table(shift3$Offense_Type)
+policeData <- read_excel("crime.xls", sheet=1, col_names = TRUE, col_types = NULL, na = "-")
+# To be able to work with the data, we have to check, if they are in the right format. For example
+# we need for date a date type
+sapply(policeData, class)
+#Important columns are:  Date, Hour, Offense Type, Beat, #offenses
+# We have to convert: Date-> date, Hour-> numeric,
+policeData$Date<-ymd(policeData$Date)
+policeData$Hour<-as.numeric(policeData$Hour)
+# Remove characters like white Space:
+names(policeData) <-gsub("'", "", names(policeData), fixed=TRUE)
+names(policeData) <-gsub("#", "n", names(policeData), fixed=TRUE)
+names(policeData) <-gsub(" ", "_", names(policeData), fixed=TRUE)
+#Getting Values represented in offense type
+table(policeData$Offense_Type)
+# Since the value is not an offense type, we have to replace the value one with "NA"
+policeData$Offense_Type[policeData$Offense_Type=="1.000000"]<-NA
+# Creating informations about the shifts
+shift1<-policeData[policeData$Hour>=8&policeData$Hour<12,]
+shift2<-policeData[policeData$Hour>=12&policeData$Hour<19,]
+shift3<-rbind(policeData[policeData$Hour>19,],policeData[policeData$Hour<8,])
+table(shift3$Offense_Type)
+nrow(policeData)
+nrow(shift1)
+nrow(shift2)
+nrow(shift3)
+# number of Beats
+nrow(count(policeData,Beat))
+#number of different offense Types
+nrow(count(policeData,Offense_Type))
+# From Which year to which year are data given:
+min(year(policeData$Date))
+max(year(policeData$Date))
+#From which month:
+table(month(policeData$Date, label=TRUE))
+#From which days:
+table(wday(policeData$Date,label=TRUE))
+### Part 2   Illustrating the data:
+#TO DO:  plottin the following things:
+#Time-> number of offenses sorted
+head(group_by(policeData,Hour)%>%summarise(no=sum(n_offenses))%>%arrange(desc(no)))
+#
+#Day-> number of offenses sorted and unsorted
+group_by(policeData,wday(Date,label=TRUE))%>%summarise(sum=sum(n_offenses, na.rm=TRUE))%>%arrange(desc(sum))
+group_by(policeData,wday(Date,label=TRUE))%>%summarise(sum=sum(n_offenses, na.rm=TRUE))
+#- District ->amount 	+
+#- Type (maximum and minimum district) -
+maxBeat <-group_by(policeData,Beat)%>%summarise(num=sum(n_offenses, na.rm=TRUE))%>%arrange(desc(num))
+head(maxBeat)
+tail(maxBeat)
+# Whats the average offences per hour in descent order?
+group_by(policeData, Hour) %>%
+summarise(meanOff= mean(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(meanOff))
+#on which of the three shift are occuring how many offenses:
+sum(shift1$n_offenses)
+sum(shift2$n_offenses)
+sum(shift3$n_offenses)
+table(shift1$Offense_Type)
+table(shift2$Offense_Type)
+table(shift3$Offense_Type)
+#Analysis of Offense Type
+group_by(policeData, Offense_Type) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+# divided by shifts
+group_by(shift1, Offense_Type) %>%
+group_by(policeData, Offense_Type) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+policeData[policeData$n_offenses=NA]
+policeData[policeData$n_offenses==NA]
+policeData[policeData$n_offenses==NA,]
+policeData[policeData$Offense_Type==NA,]
+,]
+policeData[policeData$Offense_Type==NA,]
+policeData[policeData$Offense_Type=="Burglary",]
+# "File: crime.xls, number of sheets: 1, column names are given: TRUE, na : "-"
+policeData <- read_excel("crime.xls", sheet=1, col_names = TRUE, col_types = NULL, NA = "-")
+# "File: crime.xls, number of sheets: 1, column names are given: TRUE, na : "-"
+policeData <- read_excel("crime.xls", sheet=1, col_names = TRUE, col_types = NULL, na = "-")
+# To be able to work with the data, we have to check, if they are in the right format. For example
+# we need for date a date type
+sapply(policeData, class)
+#Important columns are:  Date, Hour, Offense Type, Beat, #offenses
+# We have to convert: Date-> date, Hour-> numeric,
+policeData$Date<-ymd(policeData$Date)
+policeData$Hour<-as.numeric(policeData$Hour)
+names(policeData) <-gsub("'", "", names(policeData), fixed=TRUE)
+# Remove characters like white Space:
+names(policeData) <-gsub(" ", "_", names(policeData), fixed=TRUE)
+names(policeData) <-gsub("#", "n", names(policeData), fixed=TRUE)
+table(policeData$Offense_Type)
+#Getting Values represented in offense type
+# Since the value is not an offense type, we have to replace the value "1" with "NA"
+# Creating informations about the shifts
+policeData$Offense_Type[policeData$Offense_Type=="1.000000"]<-NA
+shift1<-policeData[policeData$Hour>=8&policeData$Hour<12,]
+shift2<-policeData[policeData$Hour>=12&policeData$Hour<19,]
+shift3<-rbind(policeData[policeData$Hour>19,],policeData[policeData$Hour<8,])
+## To get an overview, we will try to find out how many data we have:
+# Data:
+nrow(policeData)
+nrow(shift1)
+nrow(shift2)
+nrow(shift3)
+# number of Beats
+nrow(count(policeData,Offense_Type))
+#number of different offense Types
+nrow(count(policeData,Beat))
+min(year(policeData$Date))
+# From Which year to which year are data given:
+table(month(policeData$Date, label=TRUE))
+#From which days:
+#From which month:
+table(wday(policeData$Date,label=TRUE))
+max(year(policeData$Date))
+### Part 2   Illustrating the data:
+#TO DO:  plottin the following things:
+#TO DO:  plottin the following things:
+policeData[is.na(policeData$Offense_Type)]
+policeData[is.na(policeData$Offense_Type),]
+group_by(policeData, Offense_Type) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+group_by(policeData, Offense_Type, na.rm=TRUE) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+table(sort(shift1$Offense_Type,descr=TRUE))
+group_by(policeData[is.na(policeData$Offense_Type)==FALSE], Offense_Type, na.rm=TRUE) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+group_by(policeData[is.na(policeData$Offense_Type)==FALSE,], Offense_Type, na.rm=TRUE) %>%
+policeData[is.na(policeData$Offense_Type),]
+group_by(policeData[is.na(policeData$Offense_Type)==FALSE,], Offense_Type, na.rm=TRUE) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+group_by(policeData[!is.na(policeData$Offense_Type),], Offense_Type, na.rm=TRUE) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+group_by(policeData[!is.na(policeData$Offense_Type),], Offense_Type) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+group_by(policeData[!is.na(policeData$Offense_Type),], Offense_Type, na.rm=TRUE) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+table(sort(shift1$Offense_Type,descr=TRUE))
+sort(table(shift1$Offense_Type),descr=TRUE)
+sort(table(shift1$Offense_Type))
+sort(table(shift1$Offense_Type),descr=FALSE)
+table(shift1$Offense_Type)
+sort(table(shift1$Offense_Type),descr=FALSE)
+table(sort(shift1$Offense_Type,decreasing=TRUE))
+table(sort(shift1$Offense_Type),decreasing=TRUE)
+sort(table(shift1$Offense_Type),decreasing=TRUE))
+sort(table(shift1$Offense_Type),decreasing=TRUE)
+group_by(policeData[!is.na(policeData$Offense_Type),], Offense_Type, na.rm=TRUE) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+group_by(shift3[!is.na(shift3$Offense_Type),], Offense_Type, na.rm=TRUE) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+group_by(policeData[!is.na(policeData$Offense_Type),], Offense_Type) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+group_by(shift1[!is.na(shift1$Offense_Type),], Offense_Type) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+group_by(shift2[!is.na(shift2$Offense_Type),], Offense_Type) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+group_by(shift3[!is.na(shift3$Offense_Type),], Offense_Type) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+ggplot(policeData, aes(x= policeData$Offense_Type[!is.na(policeData$Offense_Type)])) +
+geom_bar()+
+ggtitle("Number of offences per type")+
+ylab("number occurences")+
+xlab("Beat Code")
+ggplot(policeData, aes(x= policeData$Offense_Type[!is.na(policeData$Offense_Type),])) +
+geom_bar()+
+ggtitle("Number of offences per type")+
+ylab("number occurences")+
+xlab("Beat Code")
+ggplot(policeData, aes(x= policeData$Offense_Type)) +
+geom_bar()+
+ggtitle("Number of offences per type")+
+ylab("number occurences")+
+xlab("Beat Code")
+#divided by shift
+ggplot(shift1, aes(x= shift1$Offense_Type)) +
+geom_bar()+
+ggtitle("Number of offences per type")+
+ylab("number occurences")+
+xlab("Beat Code")
+## Part 1
+## Part 1
+#Libraries:
+library("readxl")
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+# Reading the file
+# "File: crime.xls, number of sheets: 1, column names are given: TRUE, na : "-"
+policeData <- read_excel("crime.xls", sheet=1, col_names = TRUE, col_types = NULL, na = "-")
+# To be able to work with the data, we have to check, if they are in the right format. For example
+# we need for date a date type
+sapply(policeData, class)
+#Important columns are:  Date, Hour, Offense Type, Beat, #offenses
+# We have to convert: Date-> date, Hour-> numeric,
+policeData$Date<-ymd(policeData$Date)
+policeData$Hour<-as.numeric(policeData$Hour)
+# Remove characters like white Space:
+names(policeData) <-gsub("'", "", names(policeData), fixed=TRUE)
+names(policeData) <-gsub("#", "n", names(policeData), fixed=TRUE)
+names(policeData) <-gsub(" ", "_", names(policeData), fixed=TRUE)
+#Getting Values represented in offense type
+table(policeData$Offense_Type)
+# Since the value is not an offense type, we have to replace the value "1" with "NA"
+policeData$Offense_Type[policeData$Offense_Type=="1.000000"]<-NA
+# Creating informations about the shifts
+shift1<-policeData[policeData$Hour>=8&policeData$Hour<12,]
+shift2<-policeData[policeData$Hour>=12&policeData$Hour<19,]
+shift3<-rbind(policeData[policeData$Hour>19,],policeData[policeData$Hour<8,])
+## To get an overview, we will try to find out how many data we have:
+# Data:
+nrow(policeData)
+nrow(shift1)
+nrow(shift2)
+nrow(shift3)
+# number of Beats
+nrow(count(policeData,Beat))
+#number of different offense Types
+nrow(count(policeData,Offense_Type))
+# From Which year to which year are data given:
+min(year(policeData$Date))
+max(year(policeData$Date))
+#From which month:
+table(month(policeData$Date, label=TRUE))
+#From which days:
+table(wday(policeData$Date,label=TRUE))
+### Part 2   Illustrating the data:
+#TO DO:  plottin the following things:
+#Time-> number of offenses sorted
+head(group_by(policeData,Hour)%>%summarise(no=sum(n_offenses))%>%arrange(desc(no)))
+#
+#Day-> number of offenses sorted and unsorted
+group_by(policeData,wday(Date,label=TRUE))%>%summarise(sum=sum(n_offenses, na.rm=TRUE))%>%arrange(desc(sum))
+group_by(policeData,wday(Date,label=TRUE))%>%summarise(sum=sum(n_offenses, na.rm=TRUE))
+#- District ->amount 	+
+#- Type (maximum and minimum district) -
+maxBeat <-group_by(policeData,Beat)%>%summarise(num=sum(n_offenses, na.rm=TRUE))%>%arrange(desc(num))
+head(maxBeat)
+tail(maxBeat)
+# Whats the average offences per hour in descent order?
+group_by(policeData, Hour) %>%
+summarise(meanOff= mean(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(meanOff))
+#on which of the three shift are occuring how many offenses:
+sum(shift1$n_offenses)
+sum(shift2$n_offenses)
+sum(shift3$n_offenses)
+#Analysis of Offense Type
+group_by(policeData[!is.na(policeData$Offense_Type),], Offense_Type) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+group_by(shift1[!is.na(shift1$Offense_Type),], Offense_Type) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+group_by(shift2[!is.na(shift2$Offense_Type),], Offense_Type) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+group_by(shift3[!is.na(shift3$Offense_Type),], Offense_Type) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+#####Information about premises
+group_by(policeData, Premise) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+#divided by shifts:
+group_by(shift1, Premise) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+group_by(shift2, Premise) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+group_by(shift3, Premise) %>%
+summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+arrange(desc(counts))
+#############plotting stuff:
+#Number of offences per type
+ggplot(policeData, aes(x= policeData$Offense_Type)) +
+geom_bar()+
+ggtitle("Number of offences per type")+
+ylab("number occurences")+
+xlab("Beat Code")
+#divided by shift
+ggplot(shift1, aes(x= shift1$Offense_Type)) +
+geom_bar()+
+ggtitle("Number of offences per type")+
+ylab("number occurences")+
+xlab("Beat Code")
+#divided by shift
+ggplot(shift2, aes(x= shift2$Offense_Type)) +
+geom_bar()+
+ggtitle("Number of offences per type")+
+ylab("number occurences")+
+xlab("Beat Code")
+#divided by shift
+ggplot(shift3, aes(x= shift3$Offense_Type)) +
+geom_bar()+
+ggtitle("Number of offences per type")+
+ylab("number occurences")+
+xlab("Beat Code")
+ggplot(policeData, aes(x= myData$Beat, weights=n_offenses)) +
+geom_bar()+
+ggtitle("Number of offences per beat")
+ggplot(policeData, aes(x= policeData$Beat, weights=n_offenses)) +
+geom_bar()+
+ggtitle("Number of offences per beat")
+myData %>%
+group_by(Offense_Type,Beat)%>%
+summarise(counts=sum(n_offenses)) %>%
+arrange(desc(counts))
+policeData %>%
+group_by(Offense_Type,Beat)%>%
+summarise(counts=sum(n_offenses)) %>%
+arrange(desc(counts))
+wday(policeData$Date)
+table(wday(policeData$Date))
+table(wday(policeData$Date,label=TRUE))
+table(month(policeData$Date,label=TRUE))
+table(year(policeData$Date,label=TRUE))
+table(year(policeData$Date))
+ggplot(shift3, aes(x= shift3$Offense_Type)) +
+geom_bar()+
+ggtitle("Number of offences per type")+
+ylab("number occurences")+
+xlab("Beat Code")+facet_wrap(~wday(Date))
+help factor()
+help(factor)
+ggplot(shift3, aes(x= shift3$Offense_Type)) +
+geom_bar()+
+ggtitle("Number of offences per type")+
+ylab("number occurences")+
+xlab("Beat Code")+facet_wrap(~Date)
+ggplot(shift3, aes(x= shift3$Offense_Type)) +
+geom_bar()+
+ggtitle("Number of offences per type")+
+ylab("number occurences")+
+xlab("Beat Code")+facet_wrap(~wday(Date)
+)
+ggplot(shift3, aes(x= shift3$Offense_Type)) +
+geom_bar()+
+ggtitle("Number of offences per type")+
+ylab("number occurences")+
+xlab("Beat Code")+facet_wrap(~wday(Date))
+policeDataM<-mutate(policeData, day=wday(Date,label=TRUE))
+ggplot(policeDataM, aes(x= shift3$Offense_Type)) +
+geom_bar()+
+ggtitle("Number of offences per type")+
+ylab("number occurences")+
+xlab("Beat Code")+facet_wrap(~day)
+ggplot(policeDataM, aes(x= policeDataM$Offense_Type)) +
+geom_bar()+
+ggtitle("Number of offences per type")+
+ylab("number occurences")+
+xlab("Beat Code")+facet_wrap(~day)
+policeDataM<-mutate(policeData,day=wday(Date, label=TRUE))
+shift1M<-mutate(shift1,day=wday(Date, label=TRUE))
+shift2M<-mutate(shift2,day=wday(Date, label=TRUE))
+shift3M<-mutate(shift3,day=wday(Date,label=TRUE))
+ggplot(shift3, aes(x= shift3$Offense_Type)) +
+geom_bar()+
+ggtitle("Number of offences per type")+
+ylab("number occurences")+
+xlab("Beat Code")
+#shift 1
+ggplot(shift1M, aes(x= shift1M$Offense_Type)) + geom_bar()+
++     ggtitle("Number of offences per type")+
++     ylab("number occurences")+
++     xlab("Beat Code")+facet_wrap(~day)
+ggplot(shift1M, aes(x= shift1M$Offense_Type)) + geom_bar()+ ggtitle("Number of offences per type")+
+#shift 1
+ggplot(shift1M, aes(x= shift1M$Offense_Type)) + geom_bar()+ ggtitle("Number of offences per type")+
++     ylab("number occurences")+
++     xlab("Beat Code")+facet_wrap(~day)
+ggplot(policeDataM, aes(x= shift3$Offense_Type)) +
++     geom_bar()+
++     ggtitle("Number of offences per type")+
++     ylab("number occurences")+
++     xlab("Beat Code")+facet_wrap(~day)
+ggplot(policeDataM, aes(x= shift3$Offense_Type)) +geom_bar()+ggtitle("Number of offences per type")+ylab("number occurences")+ xlab("Beat Code")+facet_wrap(~day)
+ggplot(policeDataM, aes(x= policeDataM$Offense_Type)) +geom_bar()+ggtitle("Number of offences per type")+ylab("number occurences")+ xlab("Beat Code")+facet_wrap(~day)
+ggplot(policeDataM, aes(x= policeDataM$Offense_Type))
++geom_bar()+ggtitle("Number of offences per type")+
+ylab("number occurences")+ xlab("Beat Code")+facet_wrap(~day)
+ggplot(policeDataM, aes(x= policeDataM$Offense_Type)) +
++geom_bar()+ggtitle("Number of offences per type")+
++ ylab("number occurences")+ xlab("Beat Code")+facet_wrap(~day)
+ggplot(policeDataM, aes(x= policeDataM$Offense_Type)) +geom_bar()+ggtitle("Number of offences per type")+ ylab("number occurences")+ xlab("Beat Code")+facet_wrap(~day)
+ggplot(policeDataM, aes(x= policeDataM$Offense_Type)) +geom_bar()+ggtitle("Number of offences per type")+ ylab("number occurences")+ xlab("Beat Code")+facet_grid(~day)
+ggplot(policeDataM, aes(x= policeDataM$Offense_Type)) +geom_bar()+ggtitle("Number of offences per type")+ ylab("number occurences")+ xlab("Beat Code")+facet_grid(~day())
+ggplot(policeDataM, aes(x= policeDataM$Offense_Type)) +geom_bar()+ggtitle("Number of offences per type")+ ylab("number occurences")+ xlab("Beat Code")+facet_grid(~day
+)
+ggplot(shift3M, aes(x= shift3M$Offense_Type)) +geom_bar()+ggtitle("Number of offences per type")+ ylab("number occurences")+ xlab("Beat Code")+facet_wrap(~day)
+group_by(policeDataM,day)%>%summarise(counts=sum(n_offenses))%>%arrange(desc(counts))
+group_by(policeDataM,day)%>%summarise(counts=sum(n_offenses))%>%arrange(desc(counts))
+group_by(shift1M,day)%>%summarise(counts=sum(n_offenses))%>%arrange(desc(counts))
+group_by(shift2M,day)%>%summarise(counts=sum(n_offenses))%>%arrange(desc(counts))
+group_by(shift3M,day)%>%summarise(counts=sum(n_offenses))%>%arrange(desc(counts))
+## General information about the given data
+#which days are represented
+table(wday(policeData$Date,label=TRUE))
+#which months are represented
+table(month(policeData$Date,label=TRUE))
+#which years are represented
+ggplot(policeDataM,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift1M,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift2M,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift3M,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+group_by(policeData,day(Date))%>%summarise(sum(n_offenses, na.rm=TRUE))%>%arrange(desc(sum))
+test<-group_by(policeData,day(Date))
+group_by(policeData,day(Date))%>%summarise(sum=sum(n_offenses, na.rm=TRUE))%>%arrange(desc(sum))
+ggplot(policeData,aes=(x=day(policeData$Date), weights=n_offenses))+geom_bar()
+ggplot(policeData,aes=(x=day(policeData$Date), weights=n_offenses))+geom_bar()
+policeDataM2<-mutate(policeData,day=day(policeData$Date))
+ggplot(policeData,aes=(x=day, weights=n_offenses))+geom_bar()
+ggplot(policeDataM2,aes=(x=policeDataM2day, weights=n_offenses))+geom_bar()
+ggplot(policeDataM2,aes=(x=policeDataM2$day, weights=n_offenses))+geom_bar()
+ggplot(policeDataM2,aes=(x=policeDataM2$day,weights=n_offenses))+geom_bar()
+ggplot(policeDataM,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(policeDataM2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift1M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift2M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift3M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+shift1M<-mutate(shift1,day=wday(Date, label=TRUE))
+shift2M<-mutate(shift2,day=wday(Date, label=TRUE))
+shift3M<-mutate(shift3,day=wday(Date,label=TRUE))
+ggplot(shift1M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift2M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift3M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift1M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift2M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift3M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift1M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift2M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift3M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift1M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift2M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift3M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+policeDataM2 <-mutate(policeData, day=day(Date))
+shift1M2<-mutate(shift1,day=day(Date, label=TRUE))
+shift2M2<-mutate(shift2,day=day(Date, label=TRUE))
+shift3M2<-mutate(shift3,day=day(Date,label=TRUE))
+policeDataM2 <-mutate(policeData, day=day(Date))
+shift1M2<-mutate(shift1,day=day(Date, label=TRUE))
+shift2M2<-mutate(shift2,day=day(Date, label=TRUE))
+shift3M2<-mutate(shift3,day=day(Date,label=TRUE))
+policeDataM2 <-mutate(policeData, day=day(Date))
+shift1M2<-mutate(shift1,day=day(Date))
+shift2M2<-mutate(shift2,day=day(Date))
+shift3M2<-mutate(shift3,day=day(Date))
+ggplot(shift1M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift2M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(shift3M2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+ggplot(policeDataM2,aes(x=day,weights=n_offenses))+geom_bar() +  ggtitle('Histogram of offences by Week Day')
+table(qday(policeData$Date))
+table(qday(policeData$Date))
+table(wday(policeData$Date))
+table(wday(policeData$Date,label=TRUE))
+plot(table(wday(policeData$Date,label=TRUE)))
+plot(table(day(policeData$Date)))

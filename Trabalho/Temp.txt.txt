@@ -1,0 +1,181 @@
+```{r cars}
+library("readxl")
+library(dplyr)
+
+myData <- read_excel("crime.xls", sheet=1, col_names = TRUE, col_types = NULL, na = "-")
+head(myData)
+```
+
+# Check if variable is an data frame (true)
+```{r}
+(is.data.frame(myData))
+```
+
+# Check column types to see if they are correct
+```{r}
+sapply(myData, class)
+# extra goddies such as levels
+str(myData)
+```
+# Analise missing cases and wich colums they appear
+```{r}
+colSums(is.na(myData)) # using vectorization
+
+apply(myData, 2, function(x) length(which(is.na(x)))) # Using apply
+```
+
+# Remove the ' caracterh from colnames and replace space by _
+# Analise number of cases
+```{r}
+(nrow(myData))
+```
+
+# remove that messy columns name
+```{r}
+names(myData) <-gsub("'", "", names(myData), fixed=TRUE)
+names(myData) <-gsub("#", "n", names(myData), fixed=TRUE)
+names(myData) <-gsub(" ", "_", names(myData), fixed=TRUE)
+
+```
+```{r}
+# Convert cols types
+myData$Date <- as.Date( myData$Date, '%Y/%m/%d')
+myData$Hour <- as.numeric(myData$Hour)
+```
+
+# Convert cols types
+myData$Date <- as.Date( myData$Date, '%Y/%m/%d')
+myData$Hour <- as.numeric(myData$Hour)
+
+# Check time window time frame of the dataset
+```{r}
+firstOcc <- min(myData$Date)
+lastOcc <- max(myData$Date)
+timeframe <- lastOcc-firstOcc
+
+```
+
+
+
+# PART 2
+# Whats the average offences per hour, arrange per descent  
+```{r}
+group_by(myData, Hour) %>% 
+        summarize(meanOff= mean(n_offenses, na.rm=TRUE)) %>%
+        arrange(desc(meanOff)) 
+
+```
+
+# Witch  time of the day (hour) occurs more offences, get the peak
+```{r}
+group_by(myData, Hour) %>%
+        summarize(meanOff= mean(n_offenses, na.rm=TRUE)) %>%
+        arrange(desc(meanOff)) %>%
+        slice(1) # get the peak
+```
+
+# In witch areas(Beats) occur more offences and by each time
+```{r}
+group_by(myData, Beat) %>% 
+        summarise(meanOff= mean(n_offenses, na.rm=TRUE)) %>%
+        arrange(desc(meanOff)) 
+# Show  were in each beat occurs more offences
+group_by(myData, Beat) %>%
+        summarise(meanOff= mean(n_offenses, na.rm=TRUE)) %>%
+        arrange(desc(meanOff)) %>% 
+        slice(1)
+ ```
+ 
+# What genre of offences occur more often in the city 
+```{r}
+library(ggplot2)
+ ggplot(myData, aes(x= myData$Offense_Type)) +
+         geom_bar()+
+         ggtitle("Number of offences per type")+
+         ylab("# occurences")+
+         xlab("Beat Code")
+```
+
+#What genre of offences occur more often in the city (table) % here
+
+```{r}
+group_by(myData, Offense_Type) %>%
+        summarize(cnt = count(Offense_Type)) %>%
+        arrange(desc(cnt))
+```
+
+# What genre of offenses occur more often per beat
+```{r}
+library(ggplot2)
+ ggplot(myData, aes(x= myData$Beat, y = myData$n_offenses, color =myData$Offense_Type )) +
+         geom_point()+
+         ggtitle("Number of type offences per beat  ")+
+         xlab("Beat Code")+
+         ylab("n occurences")
+                
+```
+# What genre of offenses occur more often per beat (table)
+```{r}
+
+
+```
+# Split data per motthn
+```{r}
+myDataByMonth<-split(myData, format(myData$Date, "%Y-%m"))
+#myDataByWeekDay <- split(mydata, format)
+
+# Format data Column(If neeeded)
+library(lubridate)
+dat <- transform(myData, Date = ymd(Date))
+
+# Create Subset by weekday
+myDataByMon <- subset(dat, wday(Date, label = T) == 'Mon')
+myDataByTue <- subset(dat, wday(Date, label = T) == 'Tue')#Check
+myDataByWed <- subset(dat, wday(Date, label = T) == 'Wed')
+myDataByThu <- subset(dat, wday(Date, label = T) == 'Thu')#Check
+myDataByThu <- subset(dat, wday(Date, label = T) == 'Fry')
+
+myDataBySat <- subset(dat, wday(Date, label = T) == 'Sat')
+myDataBySun <- subset(dat, wday(Date, label = T) == 'Sun')
+
+
+```
+# subset into thre hpours
+```{r}
+split(myDataByMon, cut(myDataByMon$Hour, c(8, 12, 19, 8), include.lowest=TRUE))
+```
+
+
+
+
+
+# What genre of offenses occur more often per beat hour (factor day)
+
+# witch genre of offences occur more offen per premises
+
+# Show evolution of offences per year
+```{r}
+ggplot( data=myData, aes( Date, n_offenses )) + geom_line() 
+
+```
+
+# show per yaer beatcode
+# witch year occurs more more offenses
+# with month occurs more offences
+
+
+
+ ```{r}
+
+```
+```{r}
+
+```
+
+
+# Part 3
+# convert to factors, morning, (i) one decision for the morning period (8:00<= t < 12:00); (ii) one for the afternoon (12:00 <= t < 19:00); and the last decision for the night period (19:00 <= t < 8:00). 
+
+
+
+

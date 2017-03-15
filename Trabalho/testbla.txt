@@ -1,0 +1,798 @@
+
+
+ version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Workspace loaded from C:/Users/Lutz/Dropbox/Up_1_semester/data_mining/files/.RData]
+
+> install.packages("readxl")
+Installing package into 'C:/Users/Lutz/Documents/R/win-library/3.3'
+(as 'lib' is unspecified)
+trying URL 'https://cran.rstudio.com/bin/windows/contrib/3.3/readxl_0.1.1.zip'
+Content type 'application/zip' length 801937 bytes (783 KB)
+downloaded 783 KB
+
+package 'readxl' successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+	C:\Users\Lutz\AppData\Local\Temp\Rtmp8eGnak\downloaded_packages
+> library(readxl)
+Warning message:
+package 'readxl' was built under R version 3.3.2 
+> library(dplyr)
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+> myData <- read_excel("chrime.xls", sheet=1, col_names= TRUE, coly_types=NULL, na= "-")
+Error in read_excel("chrime.xls", sheet = 1, col_names = TRUE, coly_types = NULL,  : 
+  unused argument (coly_types = NULL)
+> myData <- read_excel("chrime.xls", sheet=1, col_names= TRUE, col_types=NULL, na= "-")
+Error: 'chrime.xls' does not exist in current working directory ('C:/Users/Lutz/Dropbox/Up_1_semester/data_mining/files').
+> myData <- read_excel("chrime.xls", sheet=1, col_names= TRUE, col_types=NULL, na= "-")
+Error: 'chrime.xls' does not exist in current working directory ('C:/Users/Lutz/Dropbox/Up_1_semester/data_mining/files').
+> setwd("C:/Users/Lutz/Dropbox/Up_1_semester/data_mining/project")
+> setwd("C:/Users/Lutz/Dropbox/Up_1_semester/data_mining/project")
+> myData <- read_excel("chrime.xls", sheet=1, col_names= TRUE, col_types=NULL, na= "-")
+Error: 'chrime.xls' does not exist in current working directory ('C:/Users/Lutz/Dropbox/Up_1_semester/data_mining/project').
+> myData <- read_excel("crime.xls", sheet=1, col_names= TRUE, col_types=NULL, na= "-")
+> head(myData)
+# A tibble: 6 × 10
+        Date  Hour `Offense Type`  Beat                               Premise BlockRange
+      <dttm> <chr>          <chr> <chr>                                 <chr>      <chr>
+1 2015-01-24    08     Auto Theft 10H10                    Residence or House  2100-2199
+2 2015-01-25    13          Theft 10H10                              Bus Stop  3900-3999
+3 2015-01-26    05     Auto Theft 10H10                             Apartment  2300-2399
+4 2015-01-26    13          Theft 10H10   Restaurant or Cafeteria Parking Lot    100-199
+5 2015-01-27    18          Theft 10H10 Multi-Plex Home (Duplex,Triplex Etc.)  5600-5699
+6 2015-01-27    18          Theft 10H10                    Residence or House        UNK
+# ... with 4 more variables: StreetName <chr>, Type <chr>, Suffix <chr>, `# offenses` <dbl>
+> (is.data.frame(myData))
+[1] TRUE
+> sapply(myData,class)
+$Date
+[1] "POSIXct" "POSIXt" 
+
+$Hour
+[1] "character"
+
+$`Offense Type`
+[1] "character"
+
+$Beat
+[1] "character"
+
+$Premise
+[1] "character"
+
+$BlockRange
+[1] "character"
+
+$StreetName
+[1] "character"
+
+$Type
+[1] "character"
+
+$Suffix
+[1] "character"
+
+$`# offenses`
+[1] "numeric"
+
+> library(lubridate)
+
+Attaching package: 'lubridate'
+
+The following object is masked from 'package:base':
+
+    date
+
+> a=24.01.2015
+Error: unexpected numeric constant in "a=24.01.2015"
+> a="24.01.2015"
+> an=dates(a)
+Error: could not find function "dates"
+> an=ymd(a)
+Warning message:
+All formats failed to parse. No formats found. 
+> an
+[1] NA
+> dates <- c(20120521, "2010-12-12", "2007/01/5", "2015-2-04",
++            "Measured on 2014-12-6", "2013-7+ 25")
+> wday(dates
++ )
+Error in as.POSIXlt.character(x, tz = tz(x)) : 
+  character string is not in a standard unambiguous format
+> dats<-ymd(dates)
+> wday(dats)
+[1] 2 1 6 4 7 5
+> head(myDate)
+Error in head(myDate) : object 'myDate' not found
+> myData <- read_excel("crime.xls", sheet=1, col_names= TRUE, col_types=NULL, na= "-")
+> head(myDate)
+Error in head(myDate) : object 'myDate' not found
+> head(myData)
+# A tibble: 6 × 10
+        Date  Hour `Offense Type`  Beat                               Premise BlockRange
+      <dttm> <chr>          <chr> <chr>                                 <chr>      <chr>
+1 2015-01-24    08     Auto Theft 10H10                    Residence or House  2100-2199
+2 2015-01-25    13          Theft 10H10                              Bus Stop  3900-3999
+3 2015-01-26    05     Auto Theft 10H10                             Apartment  2300-2399
+4 2015-01-26    13          Theft 10H10   Restaurant or Cafeteria Parking Lot    100-199
+5 2015-01-27    18          Theft 10H10 Multi-Plex Home (Duplex,Triplex Etc.)  5600-5699
+6 2015-01-27    18          Theft 10H10                    Residence or House        UNK
+# ... with 4 more variables: StreetName <chr>, Type <chr>, Suffix <chr>, `# offenses` <dbl>
+> sapply(myData, class)
+$Date
+[1] "POSIXct" "POSIXt" 
+
+$Hour
+[1] "character"
+
+$`Offense Type`
+[1] "character"
+
+$Beat
+[1] "character"
+
+$Premise
+[1] "character"
+
+$BlockRange
+[1] "character"
+
+$StreetName
+[1] "character"
+
+$Type
+[1] "character"
+
+$Suffix
+[1] "character"
+
+$`# offenses`
+[1] "numeric"
+
+> ##### Initialy it tries to guess the columns types. 
+> library("readxl")
+> library(dplyr)
+> 
+> myData <- read_excel("crime.xls", sheet=1, col_names = TRUE, col_types = NULL, na = "-")
+> head(myData)
+# A tibble: 6 × 10
+        Date  Hour `Offense Type`  Beat                               Premise BlockRange
+      <dttm> <chr>          <chr> <chr>                                 <chr>      <chr>
+1 2015-01-24    08     Auto Theft 10H10                    Residence or House  2100-2199
+2 2015-01-25    13          Theft 10H10                              Bus Stop  3900-3999
+3 2015-01-26    05     Auto Theft 10H10                             Apartment  2300-2399
+4 2015-01-26    13          Theft 10H10   Restaurant or Cafeteria Parking Lot    100-199
+5 2015-01-27    18          Theft 10H10 Multi-Plex Home (Duplex,Triplex Etc.)  5600-5699
+6 2015-01-27    18          Theft 10H10                    Residence or House        UNK
+# ... with 4 more variables: StreetName <chr>, Type <chr>, Suffix <chr>, `# offenses` <dbl>
+> 
+> 
+> #####1.2- Check if variable is a data frame format.
+> (is.data.frame(myData))
+[1] TRUE
+> 
+> 
+> #####1.3- Verify if the columns type are in the correct format.
+> sapply(myData, class)
+$Date
+[1] "POSIXct" "POSIXt" 
+
+$Hour
+[1] "character"
+
+$`Offense Type`
+[1] "character"
+
+$Beat
+[1] "character"
+
+$Premise
+[1] "character"
+
+$BlockRange
+[1] "character"
+
+$StreetName
+[1] "character"
+
+$Type
+[1] "character"
+
+$Suffix
+[1] "character"
+
+$`# offenses`
+[1] "numeric"
+
+> #Or using extra goddies such as levels
+> str(myData)
+Classes 'tbl_df', 'tbl' and 'data.frame':	10252 obs. of  10 variables:
+ $ Date        : POSIXct, format: "2015-01-24" "2015-01-25" "2015-01-26" ...
+ $ Hour        : chr  "08" "13" "05" "13" ...
+ $ Offense Type: chr  "Auto Theft" "Theft" "Auto Theft" "Theft" ...
+ $ Beat        : chr  "10H10" "10H10" "10H10" "10H10" ...
+ $ Premise     : chr  "Residence or House" "Bus Stop" "Apartment" "Restaurant or Cafeteria Parking Lot" ...
+ $ BlockRange  : chr  "2100-2199" "3900-3999" "2300-2399" "100-199" ...
+ $ StreetName  : chr  "CANAL" "CANAL" "COMMERCE" "PAIGE" ...
+ $ Type        : chr  "ST" "ST" "ST" "ST" ...
+ $ Suffix      : chr  NA NA NA "N" ...
+ $ # offenses  : num  1 1 1 1 1 1 1 1 1 1 ...
+> 
+> 
+> #####1.4- Date and Hour are in the incorrect column type. Convert column type.
+> myData$Date <- as.Date( myData$Date, '%Y/%m/%d') #Convert as Date
+Warning message:
+In as.POSIXlt.POSIXct(x, tz = tz) : unknown timezone '%Y/%m/%d'
+> myData$Hour <- as.numeric(myData$Hour) #Converto to numeric 
+> 
+> 
+> #####1.5- The column names contain messy caracther that dificult use. Replacing messy columns name with something more simplier.
+> colnames(myData)
+ [1] "Date"         "Hour"         "Offense Type" "Beat"         "Premise"      "BlockRange"  
+ [7] "StreetName"   "Type"         "Suffix"       "# offenses"  
+> 
+> names(myData) <-gsub("'", "", names(myData), fixed=TRUE)
+> names(myData) <-gsub("#", "n", names(myData), fixed=TRUE)
+> names(myData) <-gsub(" ", "_", names(myData), fixed=TRUE)
+> 
+> colnames(myData)
+ [1] "Date"         "Hour"         "Offense_Type" "Beat"         "Premise"      "BlockRange"  
+ [7] "StreetName"   "Type"         "Suffix"       "n_offenses"  
+> 
+> 
+> #####1.6- Let´s analise the missing cases and witch colums they appear.
+> colSums(is.na(myData)) #Using vectorization
+        Date         Hour Offense_Type         Beat      Premise   BlockRange   StreetName 
+           0            0            0            0          206            0            0 
+        Type       Suffix   n_offenses 
+        2402         8766            0 
+> apply(myData, 2, function(x) length(which(is.na(x)))) #Using apply
+        Date         Hour Offense_Type         Beat      Premise   BlockRange   StreetName 
+           0            0            0            0          206            0            0 
+        Type       Suffix   n_offenses 
+        2402         8766            0 
+> 
+> 
+> #####1.7- Quick analisys into the number of cases.
+> (nrow(myData))
+[1] 10252
+> 
+> 
+> #####1.8- Checking the window time frame of the dataset.
+> firstOcc <- min(myData$Date)
+> lastOcc <- max(myData$Date)
+> (timeframe <- lastOcc-firstOcc)
+Time difference of 36551 days
+> group_by(myData, Hour) %>% summarize(counts=sum(n_offenses, na.rm=TRUE)) %>% arrange(desc(counts))
+# A tibble: 24 × 2
+    Hour counts
+   <dbl>  <dbl>
+1     15    690
+2     16    655
+3     14    611
+4     17    595
+5     12    592
+6     10    587
+7     11    587
+8      9    583
+9     13    580
+10    18    574
+# ... with 14 more rows
+> ng<-group_by(myData, Hour) %>% summarize(counts=sum(n_offenses, na.rm=TRUE)) %>% arrange(desc(counts))
+> plot(ng)
+> head(myData)
+# A tibble: 6 × 10
+        Date  Hour Offense_Type  Beat                               Premise BlockRange StreetName
+      <date> <dbl>        <chr> <chr>                                 <chr>      <chr>      <chr>
+1 2015-01-24     8   Auto Theft 10H10                    Residence or House  2100-2199      CANAL
+2 2015-01-25    13        Theft 10H10                              Bus Stop  3900-3999      CANAL
+3 2015-01-26     5   Auto Theft 10H10                             Apartment  2300-2399   COMMERCE
+4 2015-01-26    13        Theft 10H10   Restaurant or Cafeteria Parking Lot    100-199      PAIGE
+5 2015-01-27    18        Theft 10H10 Multi-Plex Home (Duplex,Triplex Etc.)  5600-5699    SHERMAN
+6 2015-01-27    18        Theft 10H10                    Residence or House        UNK    ESTELLE
+# ... with 3 more variables: Type <chr>, Suffix <chr>, n_offenses <dbl>
+> a<-ymd(myData$Date)
+> a<-wday(ymd(myData$Date))
+> head(a)
+[1] 7 1 2 2 3 3
+> a
+    [1] 7 1 2 2 3 3 7 6 1 2 3 4 5 5 7 1 2 2 2 3 3 5 5 6 6 2 3 4 4 7 6 2 5 5 7 4 6 1 1 4 2 1 7 4 4
+   [46] 4 2 3 3 6 5 5 6 7 7 1 1 3 3 2 2 2 6 7 7 7 7 5 5 4 3 2 2 6 7 7 1 7 4 1 7 7 5 5 5 5 5 5 2 2
+   [91] 4 5 7 7 7 6 1 2 3 3 5 1 7 1 6 6 6 6 7 4 6 2 7 6 6 6 2 3 3 3 1 4 4 5 7 6 1 1 7 7 7 6 6 6 6
+  [136] 6 6 7 7 1 1 4 4 2 2 2 3 3 3 5 5 5 5 5 7 7 6 6 6 6 6 6 6 6 1 1 1 2 1 1 1 7 7 7 7 6 6 6 6 6
+  [181] 5 5 5 1 1 1 1 1 1 7 7 5 5 4 3 3 4 3 2 1 1 2 2 3 3 3 2 2 2 2 3 3 4 4 4 4 5 5 7 7 1 6 7 7 7
+  [226] 5 3 3 4 2 2 3 3 3 2 6 7 4 4 1 1 7 7 1 6 6 5 3 4 2 4 5 5 5 5 5 5 5 7 1 7 6 6 6 6 4 3 3 3 4
+  [271] 2 3 2 2 3 4 4 5 5 7 1 5 5 6 6 6 4 4 4 7 3 3 7 3 3 3 4 4 4 4 5 5 5 5 7 6 1 1 1 1 4 6 6 5 7
+  [316] 1 7 1 2 3 3 3 5 5 5 1 1 1 1 2 7 7 7 7 7 7 6 6 5 1 1 2 7 1 7 5 4 3 4 4 2 2 2 2 3 3 3 4 4 4
+  [361] 3 4 4 4 5 6 5 5 5 7 7 7 7 7 7 5 5 5 5 5 5 3 4 3 3 3 3 3 2 2 2 2 6 6 6 6 7 4 4 4 4 7 1 2 3
+  [406] 4 7 5 5 5 6 6 6 6 3 3 4 4 4 2 2 2 2 3 5 5 5 5 5 5 4 7 1 7 7 6 6 6 6 4 4 4 4 4 3 3 3 4 4 3
+  [451] 3 3 2 2 2 2 1 3 3 3 4 4 4 4 4 3 3 5 4 4 4 4 4 1 7 2 1 2 1 5 5 5 5 6 6 7 7 6 6 6 3 7 1 2 6
+  [496] 6 6 6 2 2 3 3 4 5 5 7 1 5 5 5 5 5 5 5 5 6 6 6 6 6 1 7 7 7 7 7 1 1 1 4 5 6 5 2 2 4 3 3 6 6
+  [541] 6 7 7 7 2 1 1 1 1 1 6 6 5 5 2 1 7 7 4 5 4 4 3 2 2 2 2 2 2 3 3 3 4 5 6 6 6 6 6 6 5 5 5 5 1
+  [586] 1 1 1 1 7 6 7 7 7 7 7 7 7 7 5 5 5 5 5 5 5 4 4 4 3 3 3 2 2 2 2 2 6 6 6 6 7 7 7 7 4 2 1 1 1
+  [631] 1 1 1 1 1 1 7 7 7 7 7 5 5 5 5 5 6 6 6 7 6 3 3 2 2 2 2 5 5 5 5 5 4 4 4 4 4 1 1 1 1 7 7 7 7
+  [676] 7 6 6 6 4 4 3 3 3 4 2 3 2 2 2 2 1 1 1 2 2 4 4 3 3 3 4 4 1 7 7 7 7 1 2 2 2 1 1 1 5 6 6 6 6
+  [721] 3 1 7 6 7 3 2 4 4 4 4 5 7 7 7 1 5 5 5 6 6 6 7 1 7 1 1 6 2 3 3 6 6 5 7 1 2 1 2 4 5 4 4 3 2
+  [766] 2 3 4 4 3 3 3 1 1 1 6 7 5 4 4 3 4 3 3 2 1 7 6 6 6 6 6 7 7 7 5 3 6 5 5 1 7 6 4 3 2 2 1 1 2
+  [811] 2 4 4 4 5 5 1 1 1 7 6 4 1 2 2 4 5 1 5 7 6 5 3 2 5 7 7 2 6 6 2 2 3 5 6 7 4 3 7 7 4 7 7 5 5
+  [856] 5 6 2 2 3 7 7 7 3 2 2 4 2 2 1 1 1 6 5 5 6 4 2 4 4 3 3 2 5 6 7 7 7 7 6 6 6 6 6 6 6 6 6 7 6
+  [901] 2 3 3 3 3 2 2 2 2 2 4 4 4 4 4 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 6 5 5 7 7 7 7 7 7 7 1 1 7 7
+  [946] 1 1 1 1 6 6 6 6 5 6 6 6 5 5 5 5 5 5 5 5 5 5 5 7 7 7 7 7 7 7 7 6 6 6 6 6 6 7 3 3 3 3 3 3 3
+  [991] 3 4 2 2 2 2 2 2 2 2 2 2 5 5 5 6 4 4 4 4 4 6 6 6 6 6 6 7 6 6 5 5 5 5 6 7 7 7 7 7 7 7 7 7 1
+ [1036] 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 4 4 4 5 5 5 5 4 4 4 4 6 5 5 5 5 5 6 6
+ [1081] 6 6 6 7 6 7 7 7 1 1 1 2 2 2 2 2 1 2 2 2 2 3 3 3 2 3 3 3 3 4 3 3 3 4 4 4 4 4 4 5 5 6 6 6 5
+ [1126] 6 1 1 1 7 7 7 7 7 5 5 5 5 4 2 2 3 6 6 6 6 7 7 7 3 1 1 1 1 1 1 7 1 7 7 7 7 5 5 5 6 4 5 5 4
+ [1171] 4 4 4 6 5 5 5 2 2 3 4 4 4 4 3 3 3 6 7 6 6 6 1 7 7 7 7 7 7 7 1 1 4 4 4 3 3 3 3 2 3 2 2 2 1
+ [1216] 1 7 1 7 6 6 5 5 6 4 5 4 4 4 2 2 2 1 2 7 2 5 2 7 7 6 7 7 2 2 3 2 1 2 5 5 5 7 1 5 1 1 1 1 6
+ [1261] 6 7 3 2 5 5 6 5 5 5 5 7 7 7 7 2 1 2 2 2 2 2 3 4 4 4 3 5 6 1 1 3 3 4 6 6 1 4 2 3 7 6 1 4 1
+ [1306] 1 1 7 7 5 6 5 4 4 2 2 3 6 7 7 4 2 2 3 3 2 5 5 6 3 4 4 4 4 4 4 2 1 2 4 6 6 6 2 2 1 5 7 2 3
+ [1351] 2 4 6 1 3 5 7 2 4 4 4 1 2 2 3 3 3 5 7 1 6 6 5 5 2 3 7 6 6 4 3 3 2 2 7 6 6 2 4 4 4 3 6 5 7
+ [1396] 7 7 6 6 6 5 5 4 4 4 3 3 1 2 2 1 7 7 7 6 5 4 5 5 5 5 5 5 5 6 6 6 6 6 6 6 6 7 7 7 7 7 7 3 3
+ [1441] 3 2 2 4 4 4 4 4 4 4 4 5 5 5 5 6 6 1 1 1 1 1 1 7 7 4 4 4 3 3 3 2 2 2 2 3 3 2 2 2 6 6 6 7 7
+ [1486] 5 5 5 7 7 7 1 2 3 3 3 3 6 6 6 5 5 5 5 5 6 7 7 7 7 7 7 7 7 1 1 1 2 2 2 2 2 1 2 3 5 5 5 5 5
+ [1531] 5 5 6 6 7 4 7 7 7 7 7 1 2 1 1 6 6 6 6 5 5 5 5 5 6 4 4 2 2 4 4 3 7 7 1 1 1 6 6 6 6 1 1 3 4
+ [1576] 3 4 4 4 1 1 1 1 1 2 2 7 7 7 7 7 5 7 6 3 3 3 2 2 2 2 1 3 3 5 5 4 4 2 6 7 7 7 6 7 6 6 6 6 6
+ [1621] 6 5 5 6 5 5 4 4 4 3 3 2 2 2 2 2 2 2 1 2 2 2 1 1 1 1 1 1 1 7 7 7 7 7 7 6 4 5 6 6 6 6 6 5 6
+ [1666] 1 1 1 1 1 6 6 6 6 6 7 6 6 7 7 7 7 7 7 3 3 3 3 4 3 4 3 2 2 2 2 2 3 4 4 4 4 4 4 4 4 4 4 4 5
+ [1711] 5 5 5 5 5 5 5 5 5 5 5 5 5 6 6 6 6 6 6 7 6 6 1 1 2 1 1 1 7 7 1 7 5 5 4 3 4 4 4 1 1 1 2 2 2
+ [1756] 2 2 3 3 3 3 2 2 2 2 2 6 6 6 6 6 7 5 5 5 5 5 5 5 6 7 1 1 1 1 1 7 2 2 1 2 1 1 4 4 4 4 3 4 4
+ [1801] 3 3 3 3 2 2 2 6 5 4 7 6 3 6 6 4 4 7 7 3 2 2 5 6 6 6 5 6 6 7 7 4 4 6 3 2 2 4 3 3 7 1 1 1 1
+ [1846] 6 6 6 6 4 2 1 6 5 1 4 4 2 4 5 5 6 6 6 6 7 7 7 1 1 1 1 5 5 5 5 4 4 4 4 2 1 2 2 2 2 2 3 3 4
+ [1891] 4 4 2 7 6 6 6 7 6 6 7 5 1 7 7 7 7 3 3 3 3 3 3 3 3 3 2 2 2 2 2 2 3 2 2 5 4 7 7 7 7 7 1 6 7
+ [1936] 6 6 6 1 1 1 1 4 4 4 2 3 2 4 1 1 1 1 1 1 2 2 2 5 6 5 6 6 7 7 7 7 1 1 2 2 2 2 2 2 2 2 3 3 4
+ [1981] 4 4 3 3 4 7 6 6 6 6 7 7 7 6 6 2 4 6 3 2 2 2 2 2 2 2 2 1 1 1 2 1 4 4 4 4 5 5 5 5 5 5 5 5 4
+ [2026] 1 1 7 7 7 7 7 7 6 6 6 6 6 6 5 5 4 6 6 6 6 6 1 1 7 7 7 7 4 4 4 4 4 4 5 5 5 2 2 4 3 3 3 7 7
+ [2071] 7 7 7 7 1 2 1 1 1 1 5 5 5 6 6 6 6 6 3 3 4 3 3 2 2 2 2 2 7 7 7 7 6 6 6 7 6 6 6 6 6 5 2 1 1
+ [2116] 1 1 1 1 1 7 1 4 4 4 3 3 3 3 3 2 2 2 2 2 2 4 6 7 7 1 5 5 5 5 5 5 2 2 2 2 2 3 2 4 6 7 6 6 6
+ [2161] 7 6 6 5 5 1 1 1 7 7 7 3 3 3 3 2 3 3 3 5 5 4 4 4 7 7 1 1 7 6 6 1 1 2 2 3 3 3 4 1 1 7 1 1 6
+ [2206] 7 2 3 4 4 5 5 5 5 6 6 6 7 7 2 2 3 3 3 6 5 4 1 7 7 6 6 5 5 7 7 1 7 4 4 4 5 5 5 5 5 2 3 7 7
+ [2251] 1 2 1 6 6 4 4 3 4 4 2 2 3 3 3 3 2 7 7 7 5 5 2 2 1 1 1 1 7 7 4 4 4 4 3 2 7 3 6 6 3 5 7 6 3
+ [2296] 2 7 1 3 4 4 2 6 6 6 7 7 7 5 6 6 6 7 7 7 1 1 4 4 5 5 5 5 5 2 3 2 2 2 2 2 6 6 6 7 7 1 1 1 5
+ [2341] 5 4 4 3 3 3 3 3 2 2 6 6 6 6 6 6 6 5 5 5 6 1 7 7 7 4 5 4 4 3 3 3 2 2 2 2 2 2 2 6 6 5 5 5 5
+ [2386] 5 1 1 1 7 7 3 3 3 2 2 4 2 6 5 4 1 1 7 7 7 6 6 5 5 5 5 5 4 5 6 3 1 1 5 6 6 2 2 2 4 3 4 5 5
+ [2431] 1 1 6 4 2 2 5 6 6 2 2 1 2 4 3 4 4 4 1 6 5 2 4 3 4 4 6 6 6 6 1 4 5 7 7 7 5 5 5 5 5 5 5 5 6
+ [2476] 6 6 6 7 7 7 7 7 1 1 1 1 1 4 4 4 4 4 4 2 2 2 2 3 2 2 2 3 6 6 6 6 6 1 7 7 7 7 7 7 1 1 5 5 5
+ [2521] 5 5 5 4 4 4 4 3 3 4 4 2 2 6 6 6 6 5 1 7 7 4 5 5 5 5 4 4 4 4 2 3 2 2 6 6 5 5 6 6 7 1 1 2 3
+ [2566] 3 2 3 3 4 4 4 3 3 3 3 2 2 4 4 3 4 5 5 5 5 5 1 1 1 1 7 7 7 6 7 6 6 6 6 6 6 5 5 5 5 5 5 4 7
+ [2611] 7 7 5 2 7 5 6 7 4 7 7 7 7 7 1 1 1 1 1 1 1 2 5 6 5 6 6 2 2 2 3 3 3 4 5 4 4 4 4 4 5 5 5 1 1
+ [2656] 7 7 7 1 6 6 6 6 4 4 4 4 4 3 3 2 2 2 2 2 2 2 7 7 1 1 7 7 7 6 6 6 6 6 6 6 7 2 2 2 2 2 2 2 2
+ [2701] 1 3 3 2 2 2 2 4 4 4 3 3 3 5 4 4 4 6 6 6 7 7 5 5 5 5 5 5 6 6 7 7 7 1 2 2 2 3 7 1 1 3 4 2 2
+ [2746] 6 6 6 1 7 5 3 4 2 2 2 2 7 7 6 7 6 6 6 5 2 1 1 2 2 2 3 3 3 2 2 5 5 5 5 6 5 5 4 4 4 4 1 7 1
+ [2791] 6 7 6 5 5 5 5 5 4 7 6 6 6 6 6 6 7 7 4 4 7 7 7 1 1 1 1 6 6 6 6 6 6 6 5 5 2 3 3 2 3 5 5 5 5
+ [2836] 5 4 4 5 4 6 6 2 2 3 3 3 3 3 4 4 4 4 1 2 2 1 7 5 5 6 5 6 6 7 6 7 2 2 2 3 4 3 4 4 4 1 4 7 7
+ [2881] 6 6 7 7 7 7 7 5 5 5 6 1 1 6 5 5 3 2 2 3 6 7 7 7 7 1 4 4 5 3 2 2 6 6 7 1 1 1 4 4 3 3 4 2 2
+ [2926] 2 2 2 1 1 2 6 5 5 7 1 1 2 2 2 1 3 3 3 4 2 3 3 3 2 2 2 5 4 4 4 1 7 7 7 7 6 5 6 5 7 4 6 6 6
+ [2971] 1 6 7 1 1 1 1 2 7 6 6 5 5 5 5 2 3 2 2 3 5 5 5 5 5 4 4 4 1 7 6 6 3 3 3 3 3 2 2 3 3 4 1 1 1
+ [3016] 2 7 7 7 5 5 6 6 7 6 1 2 3 2 3 3 3 2 3 5 4 4 4 1 5 2 2 3 4 6 6 7 6 6 6 7 7 7 5 5 4 5 5 6 6
+ [3061] 6 6 6 6 5 5 6 6 6 7 7 7 7 1 1 1 1 1 1 4 4 4 4 4 5 4 6 5 5 2 2 2 2 2 2 2 2 1 2 3 3 2 2 3 3
+ [3106] 3 3 3 3 7 6 6 6 7 7 7 1 1 1 4 5 5 5 5 5 5 5 5 5 3 3 3 3 2 2 2 2 2 3 3 3 2 2 5 5 5 5 5 5 5
+ [3151] 5 6 5 6 6 6 6 5 6 6 6 6 6 1 1 1 1 1 1 1 1 1 1 1 7 7 7 7 4 5 5 5 5 5 3 3 3 3 3 3 3 3 2 2 2
+ [3196] 2 2 1 2 2 2 2 7 7 7 6 6 6 6 6 5 5 5 5 7 1 7 2 2 2 2 2 2 2 1 1 1 1 4 4 3 3 4 4 3 3 2 2 2 2
+ [3241] 3 3 3 3 3 3 3 3 3 3 1 1 1 1 2 2 5 4 4 4 1 1 7 7 7 7 5 4 7 7 7 6 6 6 7 1 7 7 2 6 7 5 2 2 2
+ [3286] 2 3 4 5 5 6 5 5 5 5 5 4 7 7 1 1 6 6 6 6 7 3 4 4 4 1 2 2 7 7 5 5 5 6 6 6 6 7 2 1 1 2 2 2 3
+ [3331] 3 3 4 4 4 4 4 4 4 4 4 6 6 4 3 7 2 3 7 5 5 5 6 6 6 6 7 7 7 7 4 4 5 5 2 3 2 6 7 7 7 7 7 7 1
+ [3376] 1 4 4 4 4 4 4 5 5 5 3 3 2 2 3 2 2 2 2 6 5 5 5 5 4 6 6 6 6 6 2 1 1 1 7 7 4 5 4 4 4 4 4 3 3
+ [3421] 2 2 1 2 2 6 7 7 6 5 5 5 5 5 7 7 1 2 2 1 1 4 4 4 4 4 4 3 3 3 3 3 2 2 4 2 3 3 3 3 3 1 5 5 5
+ [3466] 5 5 4 4 4 4 4 4 4 7 1 1 1 1 7 7 7 7 6 6 6 5 4 4 4 5 5 5 1 6 2 7 6 7 7 7 6 6 6 7 7 7 7 1 1
+ [3511] 1 1 2 1 1 1 1 6 6 6 6 6 6 1 5 5 5 5 5 2 2 2 2 2 3 3 3 3 4 3 5 5 5 4 1 1 1 1 7 7 7 1 7 6 6
+ [3556] 2 2 2 2 3 3 3 3 3 3 3 3 3 4 4 4 4 1 2 2 1 7 7 7 7 6 6 6 6 6 7 7 2 2 1 1 1 3 3 2 3 2 4 3 3
+ [3601] 3 3 3 3 5 4 4 4 4 6 7 3 4 5 6 7 7 1 3 5 5 6 5 5 5 4 4 4 6 6 1 4 3 2 2 3 2 3 2 2 2 4 4 3 3
+ [3646] 4 4 5 5 5 5 5 1 1 1 1 1 1 1 7 7 7 7 7 7 6 6 6 6 6 6 6 6 6 6 6 5 5 5 5 5 5 5 5 5 7 7 2 2 2
+ [3691] 2 3 7 7 7 7 2 3 2 2 6 6 6 5 5 5 5 5 5 5 4 4 4 4 3 3 4 4 4 3 3 3 2 2 2 2 2 2 2 2 3 3 2 2 2
+ [3736] 2 5 6 6 6 6 6 6 6 6 6 1 1 1 7 7 7 1 7 7 7 7 6 6 7 6 6 6 6 1 7 7 7 7 7 7 1 2 2 2 2 2 3 2 3
+ [3781] 3 3 3 3 4 4 4 4 4 4 4 4 4 4 1 1 1 1 2 2 7 1 1 1 6 6 6 6 6 5 5 4 4 4 4 4 4 4 3 5 5 4 4 2 2
+ [3826] 2 1 1 1 1 1 2 2 2 2 2 2 6 6 7 5 7 4 4 1 5 5 5 4 5 6 6 6 6 6 7 7 7 1 1 1 1 1 5 5 4 4 4 4 4
+ [3871] 4 4 4 4 4 4 4 4 4 2 1 2 3 3 3 3 3 1 1 7 6 6 6 6 6 6 7 7 7 6 6 6 6 6 6 7 7 7 7 7 7 1 1 1 1
+ [3916] 1 1 6 6 6 7 5 5 6 2 2 3 2 2 3 3 3 4 4 3 3 4 4 4 4 4 4 5 5 5 5 2 2 2 1 1 1 1 2 2 3 3 3 4 5
+ [3961] 5 4 3 4 6 6 6 6 5 5 6 7 7 1 1 7 7 2 1 2 2 1 4 4 4 4 3 3 3 3 3 2 2 2 4 4 2 3 2 2 1 1 2 2 2
+ [4006] 2 2 4 5 5 5 5 5 5 6 1 1 1 1 1 1 7 7 7 6 5 6 6 4 4 5 5 5 7 6 7 7 6 6 7 7 7 6 6 6 6 6 6 6 5
+ [4051] 5 5 4 4 4 4 4 3 3 4 3 4 4 4 3 3 3 3 3 3 3 3 2 2 2 2 2 6 6 6 6 1 7 7 7 6 6 7 6 6 1 1 1 1 1
+ [4096] 1 3 2 4 4 1 1 1 1 1 2 1 7 7 7 7 7 7 7 7 1 1 7 7 6 6 6 6 6 5 6 6 6 6 6 5 5 5 5 5 4 3 4 5 5
+ [4141] 5 4 3 3 3 2 2 3 1 1 1 2 2 2 2 2 2 4 6 6 6 6 7 7 7 7 7 2 4 4 4 2 4 5 5 6 6 6 6 6 7 6 7 7 7
+ [4186] 1 1 1 1 6 5 5 5 5 5 5 4 4 4 4 4 4 2 2 1 3 3 1 7 7 7 7 7 6 6 7 7 7 7 7 1 1 1 1 6 6 6 6 7 6
+ [4231] 6 5 5 2 2 2 3 3 3 4 4 4 4 5 5 5 2 2 2 2 2 2 3 4 4 4 4 3 3 3 4 5 6 5 5 6 6 6 7 6 7 1 7 7 1
+ [4276] 1 1 3 4 3 2 4 4 4 3 5 5 5 5 1 1 1 1 7 7 7 7 7 7 6 6 6 6 6 5 4 4 5 3 4 4 2 7 7 7 7 7 6 6 6
+ [4321] 5 5 5 5 4 4 3 4 2 2 5 5 5 6 5 7 6 6 6 1 2 1 7 7 7 7 7 6 7 7 6 7 1 1 1 1 1 2 2 2 2 3 3 3 3
+ [4366] 3 4 4 4 4 1 1 2 2 2 7 7 7 7 7 6 6 6 6 6 6 6 5 5 3 3 3 3 2 2 2 6 6 7 7 7 6 6 7 7 2 4 5 4 4
+ [4411] 4 4 5 5 5 5 5 5 6 6 6 7 7 7 7 6 6 7 7 7 7 7 7 7 7 1 1 1 1 1 1 1 6 5 3 4 4 4 4 3 3 3 3 3 3
+ [4456] 3 1 2 2 2 2 2 1 7 7 7 1 6 6 6 6 6 6 6 6 7 7 7 1 1 7 1 1 1 1 1 1 1 1 1 1 1 6 6 6 6 7 7 6 7
+ [4501] 6 6 5 5 5 6 6 5 5 5 3 2 2 2 2 2 3 4 3 3 3 3 3 3 3 4 4 4 5 5 5 5 2 1 3 3 4 4 4 3 3 5 5 6 6
+ [4546] 6 6 6 6 7 1 7 7 7 2 1 2 1 1 1 1 1 4 4 4 4 4 4 4 3 4 4 4 3 3 3 3 3 3 3 3 2 2 2 2 2 2 2 2 1
+ [4591] 2 3 3 4 4 4 4 4 5 5 6 5 5 5 5 1 1 1 1 1 7 7 6 6 7 6 6 5 5 4 3 7 7 5 5 5 5 5 6 5 4 4 4 4 4
+ [4636] 3 3 2 2 2 5 5 5 5 6 6 6 1 2 1 7 7 7 6 7 1 1 1 7 7 7 3 3 2 3 3 4 4 1 2 7 7 7 6 6 6 5 5 5 5
+ [4681] 5 3 3 4 4 4 4 5 3 2 2 1 1 2 2 2 2 7 6 4 6 6 6 5 7 7 1 1 5 5 4 4 4 3 3 3 2 7 6 7 7 6 6 7 6
+ [4726] 6 6 5 2 2 2 2 2 2 2 3 3 3 4 4 4 4 5 5 2 2 1 4 4 4 5 5 5 6 6 4 4 3 2 2 2 3 3 3 2 3 4 4 4 4
+ [4771] 4 4 5 5 5 1 1 7 7 7 7 7 6 6 6 6 6 6 4 4 4 5 5 5 5 5 3 7 4 7 6 7 6 6 7 5 5 5 5 4 4 3 4 2 2
+ [4816] 2 2 2 5 5 5 5 6 7 6 7 7 7 1 6 6 7 7 7 1 3 3 3 3 2 2 4 6 6 6 7 5 5 6 7 7 1 1 1 1 7 2 1 1 1
+ [4861] 1 3 3 3 4 4 4 2 2 2 2 7 4 6 7 7 5 6 6 6 7 7 1 1 5 5 5 4 3 3 3 2 2 1 1 7 7 7 1 7 7 6 6 1 7
+ [4906] 7 7 1 6 6 6 5 2 3 3 4 5 5 2 3 3 3 2 2 2 2 4 4 4 3 4 4 4 4 1 1 1 1 1 7 7 7 5 5 5 5 7 7 7 6
+ [4951] 2 2 3 3 3 3 3 4 4 3 2 2 2 2 2 1 3 3 2 4 3 4 5 5 6 1 1 7 7 6 6 7 7 7 6 6 6 5 5 5 5 4 4 6 7
+ [4996] 6 1 1 6 7 6 6 6 6 6 6 6 3 6 4 4 5 5 5 5 4 4 4 3 3 3 2 2 2 5 5 5 5 5 5 6 6 6 7 7 7 7 7 7 1
+ [5041] 1 6 6 7 7 6 6 6 1 7 7 1 4 4 3 3 3 3 3 3 2 4 4 4 4 6 6 6 6 7 7 5 5 5 5 5 5 6 7 7 7 7 1 1 7
+ [5086] 7 7 7 1 1 1 1 1 2 2 4 3 3 4 5 5 4 2 1 3 3 3 4 4 4 4 3 3 4 4 4 4 1 4 5 6 1 6 6 6 6 6 6 6 7
+ [5131] 6 6 6 7 7 7 7 7 7 5 5 5 5 5 5 5 6 6 7 6 6 7 7 7 7 7 1 1 1 1 1 1 7 7 7 1 1 1 1 1 1 1 6 6 6
+ [5176] 5 5 3 4 4 4 4 4 4 2 2 2 3 3 1 2 2 2 1 7 7 7 7 1 1 7 6 6 6 6 2 2 2 1 1 1 7 7 7 7 7 7 1 6 6
+ [5221] 6 5 5 5 5 5 5 5 5 5 2 2 2 3 3 3 3 2 2 2 3 3 4 4 3 3 3 3 3 4 4 5 4 4 4 5 5 3 3 3 3 3 2 2 2
+ [5266] 3 2 1 1 1 2 2 2 2 4 5 5 4 5 5 5 5 5 5 3 4 4 2 2 2 1 1 1 7 1 1 1 1 1 1 7 7 7 7 6 6 6 6 5 5
+ [5311] 7 7 7 7 6 6 6 4 4 4 2 2 3 3 3 3 3 3 4 4 4 3 3 4 2 2 2 2 1 1 3 3 3 2 2 2 4 4 3 5 6 6 5 5 5
+ [5356] 1 1 1 1 1 7 1 7 7 7 7 6 5 5 5 6 5 5 6 6 4 4 5 5 5 4 6 6 6 6 6 2 5 3 5 5 6 5 4 4 4 4 4 4 5
+ [5401] 5 5 4 4 3 4 4 2 6 5 5 5 5 5 6 6 6 7 6 6 1 7 1 1 1 1 6 6 6 7 6 7 7 7 7 7 7 1 1 1 1 4 4 4 4
+ [5446] 4 3 3 3 3 2 3 2 2 2 4 4 4 4 4 4 6 6 6 5 5 5 6 5 7 7 1 7 7 1 1 1 2 2 4 4 4 4 3 5 4 4 5 4 4
+ [5491] 2 2 2 2 2 3 2 2 2 3 3 5 7 3 4 7 7 3 4 5 3 2 1 4 5 3 3 3 4 4 4 4 4 4 4 5 5 5 5 5 5 2 2 2 3
+ [5536] 3 3 2 2 2 2 1 1 7 7 6 5 5 5 6 6 6 5 5 4 5 5 5 5 5 3 7 4 4 6 7 6 6 6 6 2 3 7 5 5 5 5 5 5 6
+ [5581] 5 4 4 4 4 4 3 3 3 3 4 3 3 3 3 3 3 2 7 7 7 7 7 1 2 1 1 6 6 6 6 6 5 5 5 5 6 7 7 7 7 7 6 6 6
+ [5626] 6 6 6 6 1 3 3 2 2 2 2 2 2 3 3 4 6 6 5 5 5 5 7 7 7 7 7 6 6 6 6 6 6 6 6 2 2 1 1 1 1 4 4 4 4
+ [5671] 4 4 4 5 5 3 3 4 4 4 4 4 4 2 2 2 2 2 2 3 3 3 3 4 7 7 3 7 5 7 6 6 6 7 2 4 2 5 4 4 6 6 7 6 7
+ [5716] 7 1 2 2 2 2 3 3 3 5 5 5 5 5 5 3 4 4 1 1 1 1 6 6 7 1 6 6 6 6 1 1 1 1 1 1 7 7 7 7 7 2 2 3 2
+ [5761] 3 3 4 4 3 3 4 4 4 4 4 4 4 5 6 6 5 5 5 3 3 2 2 2 2 5 5 4 1 1 7 7 7 7 6 6 7 7 5 5 6 6 5 5 2
+ [5806] 3 3 4 4 4 3 3 4 4 5 3 7 4 5 5 5 3 2 3 2 1 1 1 6 7 7 7 7 6 6 6 1 2 6 6 5 5 6 6 1 1 5 4 2 2
+ [5851] 2 1 3 7 7 7 6 6 6 6 6 6 6 7 4 4 7 2 6 7 6 1 7 1 1 6 6 6 5 5 5 5 5 3 2 2 3 3 3 2 2 2 5 5 5
+ [5896] 5 5 4 4 1 1 6 6 7 7 6 7 1 1 7 6 5 5 1 1 1 1 1 1 2 2 7 7 7 7 2 2 2 3 3 3 3 3 5 5 5 5 4 4 3
+ [5941] 3 3 2 2 2 3 2 2 2 4 3 3 3 4 5 5 5 4 4 4 1 1 1 2 2 1 7 7 1 1 1 7 7 7 6 6 7 7 7 5 6 6 6 2 2
+ [5986] 2 2 3 2 2 3 3 3 3 3 3 4 4 2 2 2 2 3 4 6 5 5 7 3 4 4 7 7 7 7 4 3 4 4 3 4 3 2 2 7 1 1 6 5 5
+ [6031] 5 6 7 1 7 7 6 1 4 3 4 4 6 6 5 7 7 6 6 6 1 1 4 4 4 2 2 2 2 2 3 6 6 6 7 7 7 7 7 7 6 6 6 6 6
+ [6076] 3 5 6 6 6 6 7 7 7 7 7 7 7 1 7 1 5 5 5 6 6 6 6 4 4 4 5 5 3 3 2 3 2 2 2 4 4 4 4 4 5 5 5 5 5
+ [6121] 5 5 5 1 6 6 6 7 7 6 7 1 1 1 7 6 6 6 5 5 5 5 6 1 1 7 2 2 2 2 3 3 3 4 3 4 4 5 5 5 5 5 5 5 5
+ [6166] 5 3 3 2 2 1 2 2 2 4 3 3 4 4 4 5 5 4 1 1 7 7 7 7 7 6 6 7 7 6 5 5 5 4 4 4 3 4 2 2 5 5 6 5 5
+ [6211] 4 4 3 4 4 1 3 3 2 2 5 5 4 5 5 5 5 5 6 6 6 6 6 5 1 1 7 7 6 7 4 6 6 7 7 7 7 7 1 5 5 5 5 4 4
+ [6256] 4 3 2 2 3 7 5 5 6 7 7 1 7 7 6 6 6 2 3 3 4 4 7 7 6 6 6 7 1 1 1 2 5 3 3 3 1 7 6 6 6 3 4 6 4
+ [6301] 2 6 3 2 2 2 4 5 5 5 7 6 7 7 1 6 5 5 7 7 1 2 2 2 2 3 3 4 5 5 5 3 3 3 2 2 1 3 5 1 1 1 1 7 7
+ [6346] 7 7 7 6 6 6 4 3 3 3 2 3 3 5 5 5 4 4 4 4 2 2 2 3 3 3 3 6 6 6 6 6 5 5 5 5 5 5 7 7 7 7 7 1 1
+ [6391] 2 3 2 7 6 6 6 6 7 1 5 6 5 5 4 4 3 3 4 3 2 2 2 3 1 1 1 7 7 6 5 6 6 6 1 1 7 7 1 1 7 6 3 3 4
+ [6436] 4 6 5 5 6 6 7 1 1 1 1 5 4 4 3 3 2 2 2 3 4 2 3 6 2 4 5 2 2 7 4 1 2 6 6 6 6 5 1 1 1 7 2 3 5
+ [6481] 4 5 5 1 2 3 3 2 3 3 4 4 4 5 6 5 5 6 6 5 1 2 6 3 1 6 2 6 6 2 6 6 7 1 3 4 6 1 3 4 3 3 3 3 4
+ [6526] 4 4 5 5 1 7 7 7 7 7 7 5 3 3 3 3 7 6 7 1 5 5 2 1 7 4 3 4 5 1 7 6 6 6 1 7 4 6 6 5 6 7 4 4 6
+ [6571] 3 7 1 3 7 2 7 6 6 6 1 3 5 4 3 4 5 2 1 7 7 6 5 6 2 2 2 4 6 3 2 4 4 1 2 2 1 5 6 4 3 4 4 3 3
+ [6616] 3 2 6 5 5 7 2 2 3 4 6 7 6 6 7 7 7 7 7 7 3 2 4 4 4 5 5 5 5 5 6 6 6 7 7 7 7 7 1 7 1 5 5 5 7
+ [6661] 6 3 4 3 3 5 5 5 4 4 6 6 7 7 1 3 3 4 4 4 4 4 1 1 3 3 2 1 1 7 6 5 5 2 4 4 3 3 7 7 6 5 5 4 4
+ [6706] 3 3 6 7 6 1 1 7 1 7 7 6 6 6 7 4 3 2 2 2 2 6 1 1 7 2 3 4 4 4 5 6 5 6 7 1 2 3 3 2 4 5 4 6 6
+ [6751] 4 7 7 5 5 2 2 4 4 4 4 5 5 5 5 5 5 5 5 5 4 6 6 6 6 7 7 6 1 1 7 7 7 7 7 2 7 6 6 5 5 5 2 2 3
+ [6796] 3 3 3 3 3 4 4 4 4 4 4 4 4 4 4 4 4 4 5 6 5 5 6 6 6 1 1 7 7 7 1 1 1 4 4 4 4 3 5 5 4 4 2 2 2
+ [6841] 2 1 3 3 2 2 2 1 1 1 7 7 7 5 5 5 4 3 3 2 2 2 3 3 4 7 6 5 5 4 2 3 3 7 7 6 4 4 4 3 5 5 1 1 1
+ [6886] 7 7 3 2 3 4 4 4 4 7 1 1 2 2 2 4 3 7 7 6 6 6 6 5 2 2 3 3 2 2 2 2 2 3 3 3 2 2 2 2 2 1 2 1 2
+ [6931] 4 4 5 6 5 5 5 5 5 5 5 4 5 5 6 6 6 6 5 7 7 1 1 1 1 6 6 7 7 7 7 7 7 7 7 2 1 1 1 1 1 6 5 5 5
+ [6976] 6 6 6 6 6 6 6 2 2 2 3 3 3 3 4 4 4 5 5 4 5 5 5 5 5 5 5 6 6 6 6 6 6 6 6 7 7 7 6 6 7 7 7 1 1
+ [7021] 1 1 1 3 3 3 4 4 4 4 4 4 4 4 5 4 2 2 1 2 2 2 2 3 3 3 1 1 1 2 2 2 2 1 1 7 7 7 1 1 7 7 7 7 7
+ [7066] 7 6 6 6 6 6 5 6 6 6 5 4 3 3 2 2 2 2 3 3 4 3 3 3 3 3 7 7 6 7 7 7 1 1 1 5 6 6 5 5 5 5 4 4 4
+ [7111] 2 2 2 3 3 3 2 2 2 5 6 6 6 6 6 7 7 1 1 7 7 7 7 6 7 6 6 6 5 5 5 5 4 4 4 4 5 5 4 4 4 4 4 4 4
+ [7156] 3 3 3 2 2 6 6 6 5 6 5 5 1 2 2 7 7 7 7 3 3 4 2 2 2 2 3 3 4 4 4 4 4 4 6 6 6 6 6 7 1 1 2 2 2
+ [7201] 3 3 3 3 3 2 2 2 2 2 2 5 4 4 4 4 4 4 3 4 3 7 7 7 1 2 4 4 2 3 3 2 2 2 2 2 2 2 2 2 1 4 4 4 4
+ [7246] 4 5 5 5 5 5 5 5 5 5 6 6 6 5 6 1 1 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 1 3 1 1 1 1 1 5 5 5 6 5
+ [7291] 5 6 6 6 6 2 3 2 2 2 3 3 3 3 3 3 4 4 4 4 4 4 4 4 4 4 5 5 5 5 6 6 6 6 6 6 6 6 6 7 7 6 6 6 7
+ [7336] 7 1 1 1 1 1 1 4 4 4 4 4 4 4 5 2 2 2 2 2 2 1 1 1 1 2 3 3 3 3 3 2 2 1 1 1 7 1 7 7 7 7 7 5 7
+ [7381] 6 5 5 5 5 5 4 4 4 3 3 2 2 2 2 2 2 2 3 3 3 3 3 4 7 5 6 4 4 3 3 3 3 3 3 7 5 6 6 4 7 7 7 6 6
+ [7426] 6 5 4 3 6 6 6 6 6 6 1 3 3 3 3 3 2 2 2 3 3 5 6 6 6 1 1 1 2 5 5 4 4 4 3 7 7 3 6 6 6 7 3 7 2
+ [7471] 3 2 2 2 2 2 2 4 4 5 5 6 5 6 6 6 5 5 5 5 5 7 7 7 6 6 1 1 1 7 6 6 6 7 6 6 5 5 3 3 3 2 3 4 4
+ [7516] 4 4 5 6 6 7 7 1 3 3 4 4 4 4 5 2 2 2 2 3 2 1 6 6 6 5 5 5 5 5 2 4 3 4 1 1 1 1 1 1 1 7 1 7 6
+ [7561] 7 7 7 7 4 5 5 5 6 6 5 5 5 5 5 4 4 4 4 4 2 2 2 1 2 3 3 3 3 3 6 4 6 6 6 1 1 7 5 5 5 5 5 5 5
+ [7606] 4 4 4 4 4 4 4 4 4 5 4 4 2 2 2 2 2 2 2 4 3 3 3 3 5 5 6 5 5 5 6 6 6 6 6 6 6 7 7 7 1 7 7 2 1
+ [7651] 1 1 1 3 3 3 4 4 5 5 5 5 6 6 6 6 6 6 7 1 7 7 7 2 2 2 2 2 2 2 3 3 2 2 1 1 1 5 5 5 4 4 4 4 4
+ [7696] 3 3 3 3 3 3 6 6 6 6 2 3 3 2 4 4 5 5 6 6 5 5 4 7 7 7 7 7 6 1 1 1 1 1 1 7 7 7 7 3 4 4 2 4 4
+ [7741] 7 7 7 7 6 4 4 5 2 2 3 1 1 7 7 7 7 6 6 6 6 5 5 4 4 3 3 2 3 3 3 3 1 1 6 6 4 5 6 6 6 5 5 2 2
+ [7786] 2 2 5 6 6 7 7 7 7 7 7 1 5 5 5 2 2 2 2 4 3 7 7 6 3 3 3 4 3 4 4 5 6 6 6 7 7 2 2 2 2 2 2 5 4
+ [7831] 4 4 7 7 2 3 6 6 7 2 3 2 4 5 5 4 4 4 4 6 5 6 6 6 5 5 1 7 6 5 5 6 7 7 1 1 1 3 3 2 2 2 5 5 5
+ [7876] 4 4 4 7 6 6 4 3 4 3 5 2 2 2 2 2 1 7 7 7 7 7 5 5 2 4 1 6 7 5 5 6 5 4 3 4 3 3 3 3 3 7 7 7 7
+ [7921] 6 6 6 6 6 7 7 1 1 1 7 7 4 4 4 5 5 2 2 3 3 1 1 2 2 1 7 1 5 5 5 5 6 6 7 6 6 3 3 4 5 5 5 7 7
+ [7966] 7 7 2 2 2 2 5 5 4 5 4 7 7 6 6 2 2 3 3 2 3 2 2 4 4 4 4 5 5 6 6 6 6 6 5 5 4 7 7 7 1 1 1 6 5
+ [8011] 5 6 7 7 7 1 1 1 1 1 1 3 3 5 5 5 5 5 4 4 7 7 6 6 1 3 3 3 4 5 2 2 1 7 7 1 1 2 6 6 6 6 6 4 4
+ [8056] 4 3 2 3 2 2 3 4 3 1 1 1 1 7 7 7 7 7 7 7 5 5 5 5 6 6 6 5 5 6 5 5 5 5 4 4 4 4 4 2 2 2 2 2 2
+ [8101] 2 2 3 3 4 3 4 2 4 6 6 7 7 7 1 1 1 6 6 6 7 7 7 7 7 1 7 4 4 4 4 5 5 5 5 5 5 5 5 5 5 3 3 4 3
+ [8146] 2 2 2 2 1 7 7 7 7 7 5 6 5 5 5 5 5 5 6 6 6 6 6 6 3 3 4 3 3 2 2 2 2 3 3 3 3 3 4 4 4 4 4 4 6
+ [8191] 6 6 6 7 6 5 5 5 5 2 2 2 1 7 7 7 1 7 1 2 2 1 1 2 3 3 3 3 5 5 5 4 4 3 3 3 4 4 4 6 6 6 3 2 7
+ [8236] 7 7 2 7 7 3 3 4 3 3 2 2 2 2 2 2 2 2 2 2 2 4 4 4 4 4 4 3 5 5 6 6 6 6 6 6 6 5 5 5 4 4 7 7 7
+ [8281] 7 7 1 1 7 6 6 6 5 7 1 1 1 7 1 1 1 2 2 2 2 4 3 3 3 5 5 6 5 5 4 4 4 4 7 6 6 6 6 6 6 4 4 4 3
+ [8326] 3 4 4 5 3 2 1 2 7 7 7 2 1 1 5 7 6 4 4 4 2 2 3 3 3 3 3 3 3 3 4 1 1 1 1 1 1 1 1 1 1 7 7 7 5
+ [8371] 5 5 5 5 5 5 5 5 4 4 4 2 3 3 3 5 4 1 7 7 7 3 7 3 6 6 6 6 6 6 6 6 6 6 7 6 6 7 7 7 7 7 7 7 4
+ [8416] 4 4 4 4 5 5 6 5 5 3 3 3 3 3 2 2 1 1 1 1 1 1 7 7 6 5 5 5 6 6 6 6 7 7 3 3 3 3 3 2 2 2 3 3 6
+ [8461] 6 6 7 7 5 5 5 5 5 5 6 6 1 2 2 2 2 7 7 2 1 1 2 3 2 2 2 2 3 3 3 3 5 4 4 3 3 3 3 4 4 4 4 4 4
+ [8506] 4 7 6 6 7 7 3 4 3 3 3 3 2 2 2 2 2 1 4 4 6 6 6 5 7 6 6 6 6 1 7 7 1 1 1 5 6 5 5 4 4 4 1 7 6
+ [8551] 1 3 3 4 3 1 2 7 7 7 7 7 7 1 6 6 5 7 6 6 3 2 3 3 4 7 1 1 1 7 4 4 6 6 6 6 6 6 4 4 4 4 4 4 4
+ [8596] 5 5 2 2 2 3 3 3 4 7 7 2 6 6 6 6 6 6 6 6 6 1 1 6 7 6 7 1 4 5 5 5 5 5 3 2 2 2 2 2 3 3 3 3 3
+ [8641] 4 1 1 1 1 1 1 7 7 6 6 6 6 6 5 5 5 5 3 3 4 3 2 2 3 4 4 6 7 7 5 5 5 5 6 1 1 1 2 7 1 1 7 7 2
+ [8686] 1 2 3 3 2 4 5 5 5 5 5 3 4 3 3 3 4 6 7 6 6 5 2 2 7 7 4 3 2 3 2 2 3 3 3 3 2 2 2 2 1 2 2 2 5
+ [8731] 5 5 4 4 4 3 6 6 6 5 5 5 5 5 6 7 7 7 1 1 1 5 5 5 5 5 7 6 6 7 7 7 7 2 1 1 3 3 2 2 2 2 5 5 5
+ [8776] 5 5 6 4 4 4 7 7 7 7 7 6 6 6 1 3 3 4 4 2 2 1 2 7 1 1 1 2 1 1 6 6 5 7 7 6 4 4 4 2 2 3 3 4 3
+ [8821] 4 4 1 1 1 1 1 1 7 5 5 5 5 5 5 5 6 6 6 5 6 6 4 5 2 2 2 1 1 2 2 2 2 3 3 1 2 7 5 6 6 6 6 6 6
+ [8866] 6 6 6 1 6 6 6 7 6 7 7 7 7 7 4 4 4 6 6 6 5 5 5 2 2 2 2 4 4 3 3 1 2 7 7 7 6 6 6 6 6 5 6 6 5
+ [8911] 5 4 4 3 4 3 2 4 6 6 7 6 6 7 7 5 5 6 5 1 1 1 2 2 2 1 2 2 1 1 1 7 1 2 2 2 2 2 3 4 4 5 5 5 4
+ [8956] 3 3 3 3 4 6 7 7 6 6 6 6 7 3 7 7 6 3 3 4 4 2 3 3 3 3 2 1 1 2 2 2 2 2 5 5 5 5 5 5 5 3 4 6 6
+ [9001] 6 6 6 6 6 6 6 6 5 5 5 5 4 5 5 5 7 7 7 7 7 1 1 1 5 5 5 5 5 6 5 5 5 5 5 5 6 7 6 6 6 6 6 6 6
+ [9046] 7 7 7 7 7 7 7 1 1 1 1 1 1 1 1 1 3 3 4 4 3 3 3 3 3 2 2 2 2 2 2 2 2 2 2 2 5 5 5 5 5 5 5 5 5
+ [9091] 4 4 4 4 4 5 5 4 4 7 1 1 1 7 7 7 7 6 6 6 6 6 6 6 1 1 4 4 5 5 5 5 4 4 4 4 4 3 3 2 2 2 2 2 2
+ [9136] 2 1 2 2 2 1 1 1 1 1 1 1 2 2 1 1 1 1 1 6 5 6 6 5 5 7 7 7 7 6 6 6 6 4 4 4 4 4 2 2 2 3 3 3 4
+ [9181] 3 4 3 3 3 3 3 1 1 5 5 5 6 6 6 4 4 3 4 4 4 5 2 1 3 3 3 3 3 3 6 7 6 1 6 4 5 5 5 5 2 2 3 3 1
+ [9226] 1 1 1 2 2 6 6 6 7 5 5 3 4 3 2 2 4 4 4 6 6 5 6 2 2 1 1 7 7 7 2 2 2 4 5 4 4 3 3 7 7 7 6 6 6
+ [9271] 7 6 4 4 3 2 3 2 2 3 3 1 2 2 2 2 2 5 5 6 5 4 4 4 4 5 6 6 6 5 4 5 5 5 5 5 5 1 1 1 1 1 7 1 6
+ [9316] 7 7 7 7 7 7 5 5 5 5 5 6 6 6 6 6 6 6 6 6 1 1 1 7 7 7 7 3 4 3 2 2 2 2 3 2 5 5 4 4 4 5 4 4 4
+ [9361] 4 6 7 7 7 1 7 1 3 3 4 4 4 5 5 5 5 4 4 4 4 4 2 2 2 2 2 1 2 2 7 7 7 1 7 1 2 2 2 2 2 6 5 6 6
+ [9406] 6 4 2 2 3 3 3 3 3 6 1 1 5 6 6 6 4 4 4 5 2 2 2 3 3 2 4 4 1 5 6 1 1 7 6 7 4 4 2 2 4 4 4 7 7
+ [9451] 7 6 6 6 6 5 5 5 3 3 2 7 5 3 3 4 4 4 3 3 5 3 1 7 7 1 6 7 7 5 5 7 1 1 2 3 4 6 6 6 6 5 1 2 2
+ [9496] 5 5 5 5 6 1 1 7 7 4 1 1 1 1 1 6 6 6 6 5 2 2 2 3 2 5 7 2 6 6 4 6 2 6 7 3 7 1 1 1 1 4 4 5 5
+ [9541] 5 2 1 1 1 1 5 6 6 4 3 3 3 2 3 3 4 4 7 7 7 1 6 6 6 7 7 6 6 2 2 1 2 3 3 3 4 3 4 4 4 4 4 4 6
+ [9586] 6 6 6 7 7 7 5 5 5 4 4 4 2 2 3 3 3 3 5 4 4 6 5 1 1 6 6 6 6 6 5 5 1 1 7 7 7 2 3 3 3 3 5 5 5
+ [9631] 5 5 4 4 1 1 6 6 7 7 7 7 7 7 4 4 4 3 3 3 3 5 3 3 2 3 3 3 3 2 2 1 6 6 6 5 6 5 1 1 2 7 3 3 3
+ [9676] 2 2 4 4 4 5 6 4 5 5 5 3 4 5 5 4 2 7 1 5 5 5 6 4 3 3 1 6 1 2 5 5 3 4 4 7 4 4 5 6 3 2 5 5 6
+ [9721] 5 7 1 6 6 6 7 7 3 5 4 4 5 5 6 3 2 1 5 6 6 1 1 4 7 1 7 7 7 4 4 4 4 3 7 6 1 1 4 7 5 3 2 7 6
+ [9766] 1 2 2 2 2 4 7 6 4 4 5 2 7 7 7 1 5 5 6 7 7 7 1 5 5 5 3 1 6 6 6 7 7 4 6 7 7 6 7 3 4 7 7 7 6
+ [9811] 6 6 6 6 5 2 2 1 3 3 3 3 3 3 3 3 3 5 5 4 4 2 7 4 1 6 3 5 7 5 4 1 6 2 5 5 5 4 4 1 1 1 7 7 6
+ [9856] 5 5 5 5 4 4 4 3 3 4 4 7 7 7 1 2 2 1 5 7 6 6 3 3 3 4 2 2 2 2 2 2 2 7 4 2 6 6 6 2 3 2 6 6 1
+ [9901] 6 1 2 1 6 5 1 2 3 3 3 3 4 5 5 5 7 7 3 4 6 7 7 2 2 3 4 5 5 6 6 6 5 6 6 6 6 6 7 7 1 1 2 2 1
+ [9946] 2 3 4 4 3 4 4 1 1 2 7 6 6 2 2 3 3 4 4 4 4 4 4 7 7 7 6 6 5 5 5 5 5 4 4 3 3 2 2 5 6 6 6 1 7
+ [9991] 7 7 7 7 7 6 5 5 5 5
+ [ reached getOption("max.print") -- omitted 252 entries ]
+> ng<-group_by(myData, wday(ymd(Dates))) %>% summarize(counts=sum(n_offenses, na.rm=TRUE)) %>% arrange(desc(counts))
+Error in eval(substitute(expr), envir, enclos) : object 'Dates' not found
+> ng<-group_by(myData, wday(ymd(Date))) %>% summarize(counts=sum(n_offenses, na.rm=TRUE)) %>% arrange(desc(counts))
+> plot(ng)
+> ng<-group_by(myData, wday(ymd(Date),label=TRUE)) %>% summarize(counts=sum(n_offenses, na.rm=TRUE)) %>% arrange(desc(counts))
+> plot(ng)
+> ng<-group_by(myData, month(ymd(Date),label=TRUE)) %>% summarize(counts=sum(n_offenses, na.rm=TRUE)) %>% arrange(desc(counts))
+> plot(ng)
+> ng<-group_by(myData, Hour)) %>% summarize(counts=sum(n_offenses, na.rm=TRUE)) %>% arrange(desc(counts))
+Error: unexpected ')' in "ng<-group_by(myData, Hour))"
+> ng<-group_by(myData, Hour) %>% summarize(counts=sum(n_offenses, na.rm=TRUE)) %>% arrange(desc(counts))
+> plot(ng)
+> ng<-group_by(myData, Beat) %>% summarize(counts=sum(n_offenses, na.rm=TRUE)) %>% arrange(desc(counts))
+> plot(ng)
+Warning message:
+In xy.coords(x, y, xlabel, ylabel, log) : NAs introduced by coercion
+> ng<-group_by(myData, Beat) %>% summarize(counts=sum(n_offenses, na.rm=TRUE)) %>% arrange(desc(counts))
+> plot(ng)
+Warning message:
+In xy.coords(x, y, xlabel, ylabel, log) : NAs introduced by coercion
+> ba<-group_by(myData,Beat)
+> head(ba)
+Source: local data frame [6 x 10]
+Groups: Beat [1]
+
+        Date  Hour Offense_Type  Beat                               Premise BlockRange StreetName
+      <date> <dbl>        <chr> <chr>                                 <chr>      <chr>      <chr>
+1 2015-01-24     8   Auto Theft 10H10                    Residence or House  2100-2199      CANAL
+2 2015-01-25    13        Theft 10H10                              Bus Stop  3900-3999      CANAL
+3 2015-01-26     5   Auto Theft 10H10                             Apartment  2300-2399   COMMERCE
+4 2015-01-26    13        Theft 10H10   Restaurant or Cafeteria Parking Lot    100-199      PAIGE
+5 2015-01-27    18        Theft 10H10 Multi-Plex Home (Duplex,Triplex Etc.)  5600-5699    SHERMAN
+6 2015-01-27    18        Theft 10H10                    Residence or House        UNK    ESTELLE
+# ... with 3 more variables: Type <chr>, Suffix <chr>, n_offenses <dbl>
+> ba<-group_by(myData,Beat, na.rm=TRUE)
+> head(ba)
+Source: local data frame [6 x 11]
+Groups: Beat, na.rm [1]
+
+        Date  Hour Offense_Type  Beat                               Premise BlockRange StreetName
+      <date> <dbl>        <chr> <chr>                                 <chr>      <chr>      <chr>
+1 2015-01-24     8   Auto Theft 10H10                    Residence or House  2100-2199      CANAL
+2 2015-01-25    13        Theft 10H10                              Bus Stop  3900-3999      CANAL
+3 2015-01-26     5   Auto Theft 10H10                             Apartment  2300-2399   COMMERCE
+4 2015-01-26    13        Theft 10H10   Restaurant or Cafeteria Parking Lot    100-199      PAIGE
+5 2015-01-27    18        Theft 10H10 Multi-Plex Home (Duplex,Triplex Etc.)  5600-5699    SHERMAN
+6 2015-01-27    18        Theft 10H10                    Residence or House        UNK    ESTELLE
+# ... with 4 more variables: Type <chr>, Suffix <chr>, n_offenses <dbl>, na.rm <lgl>
+> ng<-group_by(myData, Beat, na.rm=TRUE) %>% summarize(counts=sum(n_offenses, na.rm=TRUE)) %>% arrange(desc(counts))
+> plot(ng)
+Warning message:
+In data.matrix(x) : NAs introduced by coercion
+> myData[myData$Beat = NULL]
+Error: unexpected '=' in "myData[myData$Beat ="
+> myData[myData$Beat == NULL]
+Error: Length of logical index vector must be 1 or 10, got: 0
+> ng<-group_by(myData, Beat, na.rm=TRUE) %>% summarize(counts=sum(n_offenses, na.rm=TRUE)) %>% arrange(desc(counts))
+> ng
+Source: local data frame [116 x 3]
+Groups: Beat [116]
+
+    Beat na.rm counts
+   <chr> <lgl>  <dbl>
+1  12D10  TRUE    243
+2   1A20  TRUE    231
+3   6B60  TRUE    227
+4  17E10  TRUE    214
+5  18F20  TRUE    204
+6  13D20  TRUE    200
+7  19G10  TRUE    196
+8   2A50  TRUE    191
+9   3B10  TRUE    185
+10  1A50  TRUE    179
+# ... with 106 more rows
+> ng<-group_by(myData, Beat) %>% summarize(counts=sum(n_offenses, na.rm=TRUE)) %>% arrange(desc(counts))
+> ng
+# A tibble: 116 × 2
+    Beat counts
+   <chr>  <dbl>
+1  12D10    243
+2   1A20    231
+3   6B60    227
+4  17E10    214
+5  18F20    204
+6  13D20    200
+7  19G10    196
+8   2A50    191
+9   3B10    185
+10  1A50    179
+# ... with 106 more rows
+> plot(ng)
+Warning message:
+In xy.coords(x, y, xlabel, ylabel, log) : NAs introduced by coercion
+> ng
+# A tibble: 116 × 2
+    Beat counts
+   <chr>  <dbl>
+1  12D10    243
+2   1A20    231
+3   6B60    227
+4  17E10    214
+5  18F20    204
+6  13D20    200
+7  19G10    196
+8   2A50    191
+9   3B10    185
+10  1A50    179
+# ... with 106 more rows
+> ggparcoord
+Error: object 'ggparcoord' not found
+> library(GGally)
+
+Attaching package: 'GGally'
+
+The following object is masked from 'package:dplyr':
+
+    nasa
+
+Warning message:
+package 'GGally' was built under R version 3.3.2 
+> head(myData)
+# A tibble: 6 × 10
+        Date  Hour Offense_Type  Beat                               Premise BlockRange StreetName
+      <date> <dbl>        <chr> <chr>                                 <chr>      <chr>      <chr>
+1 2015-01-24     8   Auto Theft 10H10                    Residence or House  2100-2199      CANAL
+2 2015-01-25    13        Theft 10H10                              Bus Stop  3900-3999      CANAL
+3 2015-01-26     5   Auto Theft 10H10                             Apartment  2300-2399   COMMERCE
+4 2015-01-26    13        Theft 10H10   Restaurant or Cafeteria Parking Lot    100-199      PAIGE
+5 2015-01-27    18        Theft 10H10 Multi-Plex Home (Duplex,Triplex Etc.)  5600-5699    SHERMAN
+6 2015-01-27    18        Theft 10H10                    Residence or House        UNK    ESTELLE
+# ... with 3 more variables: Type <chr>, Suffix <chr>, n_offenses <dbl>
+> library(ggplot2)
+> barplot(ng)
+Error in barplot.default(ng) : 'height' must be a vector or a matrix
+> head(ng)
+# A tibble: 6 × 2
+   Beat counts
+  <chr>  <dbl>
+1 12D10    243
+2  1A20    231
+3  6B60    227
+4 17E10    214
+5 18F20    204
+6 13D20    200
+> head(ng$Beat)
+[1] "12D10" "1A20"  "6B60"  "17E10" "18F20" "13D20"
+> barplot(ng$Beat)
+Error in -0.01 * height : non-numeric argument to binary operator
+> barplot(ng$counts)
+> bl<-group_by(myData, Offense_Type)
+> head(bl)
+Source: local data frame [6 x 10]
+Groups: Offense_Type [2]
+
+        Date  Hour Offense_Type  Beat                               Premise BlockRange StreetName
+      <date> <dbl>        <chr> <chr>                                 <chr>      <chr>      <chr>
+1 2015-01-24     8   Auto Theft 10H10                    Residence or House  2100-2199      CANAL
+2 2015-01-25    13        Theft 10H10                              Bus Stop  3900-3999      CANAL
+3 2015-01-26     5   Auto Theft 10H10                             Apartment  2300-2399   COMMERCE
+4 2015-01-26    13        Theft 10H10   Restaurant or Cafeteria Parking Lot    100-199      PAIGE
+5 2015-01-27    18        Theft 10H10 Multi-Plex Home (Duplex,Triplex Etc.)  5600-5699    SHERMAN
+6 2015-01-27    18        Theft 10H10                    Residence or House        UNK    ESTELLE
+# ... with 3 more variables: Type <chr>, Suffix <chr>, n_offenses <dbl>
+> bla<-group_by(myData, Offense_Type) %>% summarize(counts=sum(n_offenses, na.rm=TRUE)) %>% arrange(desc(counts))
+> head(bla)
+# A tibble: 6 × 2
+        Offense_Type counts
+               <chr>  <dbl>
+1              Theft   5705
+2           Burglary   1893
+3         Auto Theft   1171
+4            Robbery    838
+5 Aggravated Assault    722
+6               Rape     62
+> barplot(bla)
+Error in barplot.default(bla) : 'height' must be a vector or a matrix
+> barplot(bla$Offense_Type)
+Error in -0.01 * height : non-numeric argument to binary operator
+> barplot(bla)
+Error in barplot.default(bla) : 'height' must be a vector or a matrix
+> sapply(bla, class)
+Offense_Type       counts 
+ "character"    "numeric" 
+> barplot(bla$counts)
+> bla
+# A tibble: 8 × 2
+        Offense_Type counts
+               <chr>  <dbl>
+1              Theft   5705
+2           Burglary   1893
+3         Auto Theft   1171
+4            Robbery    838
+5 Aggravated Assault    722
+6               Rape     62
+7             Murder     25
+8           1.000000      1
+> myDataDummy <-myData #Make local copy
+> myDataDummy$Week_Day <- wday(myDataDummy$Date)# Get Weekday
+> 
+> group_by(myDataDummy, Week_Day) %>%
++     summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
++     arrange(desc(counts))
+# A tibble: 7 × 2
+  Week_Day counts
+     <dbl>  <dbl>
+1        6   1714
+2        5   1595
+3        7   1566
+4        4   1488
+5        2   1464
+6        3   1336
+7        1   1254
+> #Or
+> myDataWeek <-myData # dummy copy
+> myDataWeek$day_of_week <- format(myDataWeek$Date, "%A")
+> myDataDummy <-myData #Make local copy
+> myDataDummy$Week_Day <- wday(myDataDummy$Date)# Get Weekday
+> 
+> group_by(myDataDummy, Week_Day) %>%
++     summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
++     arrange(desc(counts))
+# A tibble: 7 × 2
+  Week_Day counts
+     <dbl>  <dbl>
+1        6   1714
+2        5   1595
+3        7   1566
+4        4   1488
+5        2   1464
+6        3   1336
+7        1   1254
+> #Or
+> myDataWeek <-myData # dummy copy
+> myDataWeek$day_of_week <- format(myDataWeek$Date, "%A")
+> 
+> group_by(myDataWeek, day_of_week) %>%
++     summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
++     arrange(desc(counts)
++ 
++ )
+# A tibble: 7 × 2
+  day_of_week counts
+        <chr>  <dbl>
+1     Freitag   1714
+2  Donnerstag   1595
+3     Samstag   1566
+4    Mittwoch   1488
+5      Montag   1464
+6    Dienstag   1336
+7     Sonntag   1254
+> group_by(myDataWeek, day_of_w

@@ -1,0 +1,499 @@
+---
+title: "Data Mining Project"
+author: "Lutz Daniel Leonardo Invernizzio"
+date: "2016 M12 27"
+output: html_document
+---
+
+## Data Mining 1- Final Project
+# First Part - Data Importation and clean-up
+
+We start first with importing important packages and the file. Unknown data are marked as "-" therefore we need to add this information in the read_excel command
+```{r  message=FALSE}
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(DMwR)
+library(rpart.plot)
+library(e1071)
+library(nnet)
+library(earth)
+policeData <- read_excel("crime.xls", sheet=1, col_names = TRUE, col_types = NULL, na = "-")
+```
+
+Now we can start the clean-up.
+Important for us is the format of the data. Therefore we are going to check, how our data are formated:
+```{r eval=TRUE}
+sapply(policeData, class)
+```
+
+We see, that we have to change the format of Date and Hour. 
+```{r}
+policeData$Date<-ymd(policeData$Date)
+policeData$Hour<-as.numeric(policeData$Hour)
+```
+To make it easier for us handling the data, we have to remove characters like white space from the first line
+
+```{r}
+names(policeData) <-gsub("'", "", names(policeData), fixed=TRUE)
+names(policeData) <-gsub("#", "n", names(policeData), fixed=TRUE)
+names(policeData) <-gsub(" ", "_", names(policeData), fixed=TRUE)
+```
+
+Important part of the cleaning is analysing the represented values.
+```{r}
+table(policeData$Offense_Type)
+```
+
+Obviously "1.000000" is not an offense type, and we are going to replace it with  "NA"
+
+```{r}
+policeData$Offense_Type[policeData$Offense_Type=="1.000000"]<-NA
+```
+
+For our work, we need some more information:
+
+- Dividing the day into the three shifts
+- adding the information of the day,week day, month and year
+
+```{r}
+policeData<-mutate(policeData,wday=wday(Date, label=TRUE), day=day(Date),
+                   month=month(Date,label=TRUE), year=year(Date))
+shift1<-policeData[policeData$Hour>=8&policeData$Hour<12,]
+shift2<-policeData[policeData$Hour>=12&policeData$Hour<19,]
+shift3<-rbind(policeData[policeData$Hour>19,],policeData[policeData$Hour<8,])
+```
+#Second Part: Data Explore Analysis
+
+We start to get an overview of the information we have to analyse the data regardingn:
+
+- how many informations are given
+- how many informations about each shift are given
+- from which years do we have information
+- which months are represented
+
+
+How many events are reported:
+```{r }
+nrow(policeData)
+```
+How many are reported for shift 1 , shift 2 and shift 3 respectively
+```{r}
+nrow(shift1)
+nrow(shift2)
+nrow(shift3)
+```
+
+We have informations from the years:
+```{r echo=TRUE}
+table(policeData$year)
+```
+and months:
+```{r echo=FALSE}
+table(policeData$month)
+```
+Obviously our main information are coming from january and the year 2015.
+This is important for the third task, since we don't know how criminality would change during the year. We are basing our informations mainly on January and 2015 (and additional information from the other months and years).
+We see this also by this plots:
+```{r}
+ggplot(policeData,aes(policeData$month))+geom_bar()+xlab("months")
+ggplot(policeData,aes(policeData$year))+geom_bar()+xlab("years")
+
+```
+
+
+Now we will come to the information about the city and criminality
+How many beats does the city have:
+```{r}
+nrow(table(policeData$Beat))
+```
+What kind of criminals are given?
+```{r}
+table(policeData$Offense_Type)
+``` 
+
+
+Coming now to the stastical informations:
+We are interested in
+
+- How many offenses are occuring per hour
+- How many offenses are occuring per weekday
+- How many offenses are occuring per day
+- which are the beats with the most offenses
+- which are the beats with the least offenses
+
+
+Coming to the first point.
+How many offenses are occuring per hour?
+
+```{r}
+#sorted
+group_by(policeData,Hour)%>%summarise(no=sum(n_offenses))%>%arrange(desc(no))
+#unsorted
+group_by(policeData,Hour)%>%summarise(no=sum(n_offenses))
+ggplot(policeData,aes(x=Hour,weights=n_offenses))+geom_bar() + 
+  ggtitle('Histogram of offences by Week Day')
+
+```
+How many offenses are occuring per day?
+
+```{r}
+##Information about the week days 
+#sorted
+group_by(policeData,day)%>%summarise(no=sum(n_offenses))%>%arrange(desc(no))
+#unsorted
+group_by(policeData,day)%>%summarise(no=sum(n_offenses))
+ggplot(policeData,aes(x=wday,weights=n_offenses))+geom_bar() + 
+  ggtitle('Histogram of offences by  Week Day')
+##Shift 1
+#sorted
+group_by(shift1,day)%>%summarise(no=sum(n_offenses))%>%arrange(desc(no))
+#unsorted
+group_by(shift1,day)%>%summarise(no=sum(n_offenses))
+ggplot(shift1,aes(x=wday,weights=n_offenses))+geom_bar() + 
+  ggtitle('Histogram of offences by Week day of shift 1')
+##Shift 2
+#sorted
+group_by(shift2,day)%>%summarise(no=sum(n_offenses))%>%arrange(desc(no))
+#unsorted
+group_by(shift2,day)%>%summarise(no=sum(n_offenses))
+ggplot(shift2,aes(x=wday,weights=n_offenses))+geom_bar() + 
+  ggtitle('Histogram of offences by Week Day of shift 2')
+##Shift 3
+#sorted
+group_by(shift3,day)%>%summarise(no=sum(n_offenses))%>%arrange(desc(no))
+#unsorted
+group_by(shift3,day)%>%summarise(no=sum(n_offenses))
+ggplot(shift3,aes(x=wday,weights=n_offenses))+geom_bar() + 
+  ggtitle('Histogram of offences by Week Day of shift3')
+
+```
+How many offenses are occuring per day?
+```{r}
+##Information about the days of the month
+#sorted
+head(group_by(policeData,day)%>%summarise(no=sum(n_offenses))%>%arrange(desc(no)))
+#unsorted
+head(group_by(policeData,day)%>%summarise(no=sum(n_offenses)))
+ggplot(policeData,aes(x=day,weights=n_offenses))+geom_bar() + 
+  ggtitle('Histogram of offences by  Day')
+##Shift 1
+#sorted
+head(group_by(shift1,day)%>%summarise(no=sum(n_offenses))%>%arrange(desc(no)))
+#unsorted
+head(group_by(shift1,day)%>%summarise(no=sum(n_offenses)))
+ggplot(shift1,aes(x=day,weights=n_offenses))+geom_bar() + 
+  ggtitle('Histogram of offences by day of shift 1')
+##Shift 2
+#sorted
+head(group_by(shift2,day)%>%summarise(no=sum(n_offenses))%>%arrange(desc(no)))
+#unsorted
+head(group_by(shift2,day)%>%summarise(no=sum(n_offenses)))
+ggplot(shift2,aes(x=day,weights=n_offenses))+geom_bar() + 
+  ggtitle('Histogram of offences by Day of shift 2')
+##Shift 3
+#sorted
+head(group_by(shift3,day)%>%summarise(no=sum(n_offenses))%>%arrange(desc(no)))
+#unsorted
+head(group_by(shift3,day)%>%summarise(no=sum(n_offenses)))
+ggplot(shift3,aes(x=day,weights=n_offenses))+geom_bar() + 
+  ggtitle('Histogram of offences by Day of shift3')
+
+```
+
+
+Which are the beats with the most offenses? Is there a difference between the shifts?
+```{r}
+#Whole day
+group_by(policeData, Beat)%>%summarise(sumBeat=sum(n_offenses))%>%arrange(desc(sumBeat))
+#shift 1
+group_by(shift1, Beat)%>%summarise(sumBeat=sum(n_offenses))%>%arrange(desc(sumBeat))
+#shift 2
+group_by(shift2, Beat)%>%summarise(sumBeat=sum(n_offenses))%>%arrange(desc(sumBeat))
+#shift 3
+group_by(shift3, Beat)%>%summarise(sumBeat=sum(n_offenses))%>%arrange(desc(sumBeat))
+
+```
+We can see that the most dangerous beats do not really change during the day. The first places are occupied by the same beats. 
+We can make this analysis also with the least dangerous beats:
+Which are the beats with the least number of offenses?
+
+```{r}
+#Whole day
+group_by(policeData, Beat)%>%summarise(sumBeat=sum(n_offenses))%>%arrange(sumBeat)
+#shift 1
+group_by(shift1, Beat)%>%summarise(sumBeat=sum(n_offenses))%>%arrange(sumBeat)
+#shift 2
+group_by(shift2, Beat)%>%summarise(sumBeat=sum(n_offenses))%>%arrange(sumBeat)
+#shift 3
+group_by(shift3, Beat)%>%summarise(sumBeat=sum(n_offenses))%>%arrange(sumBeat)
+
+```
+Until now, we have just the information how many offenses occured. But interesting is also the type of offense. So we have to do an analysis of the Offense Type.
+Our focus will be on the day and on the three shifts.
+
+```{r}
+group_by(policeData[!is.na(policeData$Offense_Type),], Offense_Type) %>%
+  summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+  arrange(desc(counts))
+
+ggplot(policeData, aes(x= policeData$Offense_Type)) +
+  geom_bar()+
+  ggtitle("Number of offenses per type- whole day")+
+  ylab("number occurences")+
+  xlab("Offense Type")
+
+
+group_by(shift1[!is.na(shift1$Offense_Type),], Offense_Type) %>%
+  summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+  arrange(desc(counts))
+
+ggplot(shift1, aes(x= shift1$Offense_Type)) +
+  geom_bar()+
+  ggtitle("Number of offenses per type - shift 1")+
+  ylab("number occurences")+
+  xlab("Offense Type")
+
+group_by(shift2[!is.na(shift2$Offense_Type),], Offense_Type) %>%
+  summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+  arrange(desc(counts))
+
+
+ggplot(shift2, aes(x= shift2$Offense_Type)) +
+  geom_bar()+
+  ggtitle("Number of offences per type - shift 2")+
+  ylab("number occurences")+
+  xlab("Offense Type")
+
+
+group_by(shift3[!is.na(shift3$Offense_Type),], Offense_Type) %>%
+  summarise(counts= sum(n_offenses, na.rm=TRUE)) %>%
+  arrange(desc(counts))
+
+
+ggplot(shift3, aes(x= shift3$Offense_Type)) +
+  geom_bar()+
+  ggtitle("Number of offenses per type - shift 3")+
+  ylab("number occurences")+
+  xlab("Offense Type")
+
+```
+
+Having made this analysis, we can extend it to an analysis of the weekdays, to see if there is a change during the days
+
+```{r}
+#general
+group_by(policeData,wday)%>%summarise(counts=sum(n_offenses))%>%arrange(desc(counts))
+
+ggplot(policeData, aes(x= policeData$Offense_Type)) +geom_bar()+
+  ggtitle("Number of offences per type -whole day")+ 
+  ylab("number occurences")+ xlab("Offense Type")+facet_wrap(~wday)+
+  theme(text = element_text(size=10),axis.text.x = element_text(angle=90, hjust=1)) 
+#shift 1
+group_by(shift1,day)%>%summarise(counts=sum(n_offenses))%>%arrange(desc(counts))
+ggplot(shift1, aes(x= shift1$Offense_Type)) +geom_bar()+
+  ggtitle("Number of offenses per type - shift 1")+ 
+  ylab("number occurences")+ xlab("Offense Type")+facet_wrap(~wday)+ 
+  theme(text = element_text(size=10),axis.text.x = element_text(angle=90, hjust=1)) 
+#shift 2
+group_by(shift2,day)%>%summarise(counts=sum(n_offenses))%>%arrange(desc(counts))
+ggplot(shift2, aes(x= shift2$Offense_Type)) +geom_bar()+
+  ggtitle("Number of offences per type - shift 2")+ 
+  ylab("number occurences")+ xlab("Offense Type")+facet_wrap(~wday)+ 
+  theme(text = element_text(size=10),axis.text.x = element_text(angle=90, hjust=1)) 
+#shift 3
+group_by(shift3,day)%>%summarise(counts=sum(n_offenses))%>%arrange(desc(counts))
+ggplot(shift3, aes(x= shift3$Offense_Type)) +geom_bar()+
+  ggtitle("Number of offences per type - shift 3")+ 
+  ylab("number occurences")+ xlab("Offense Type")+facet_wrap(~wday)+ 
+  theme(text = element_text(size=10),axis.text.x = element_text(angle=90, hjust=1)) 
+
+```
+
+
+# Third Part - Predictive Modeling
+
+We start preparing the dataset that will be predicted.
+
+First add the week day and cut the unuseful data. We group the data by beat, week day and hour, and calculate the average number of offenses per beat and weekday.
+
+```{r}
+policeData<-mutate(policeData,day=day(Date),wday=wday(Date,label=TRUE))
+group_by(policeData, Beat, wday, Hour)%>%summarise(n_offenses=mean(n_offenses))
+```
+```{r echo = FALSE}
+policeDataTest<-group_by(policeData, Beat, wday, Hour)%>%summarise(n_offenses=mean(n_offenses))
+```
+
+
+Then add the shift which ocurred the offenses.
+
+```{r}
+policeDataTest$shift<-NA
+policeDataTest$shift[policeDataTest$Hour>=8 & policeDataTest$Hour <12]<-"shift1"
+policeDataTest$shift[policeDataTest$Hour>=12 & policeDataTest$Hour <19]<-"shift2"
+policeDataTest$shift[policeDataTest$Hour>=19 & policeDataTest$Hour <24]<-"shift3"
+policeDataTest$shift[policeDataTest$Hour>=0 & policeDataTest$Hour <8]<-"shift3"
+```
+
+Swapping the last two columns and cancel the information about the Hour
+
+```{r}
+policeDataTest<-policeDataTest[c("Beat","wday", "shift", "n_offenses")]
+policeDataTest$Beat<-factor(policeDataTest$Beat)
+policeDataTest$shift<-factor(policeDataTest$shift)
+group_by(policeDataTest, Beat, wday, shift)%>%summarise(n_offenses=mean(n_offenses))
+```
+```{r echo=FALSE}
+policeDataTest<-group_by(policeDataTest, Beat, wday, shift)%>%summarise(n_offenses=mean(n_offenses))
+```
+
+
+Extract the samples for the training and test dataset.
+
+```{r}
+splitVal <- 0.7
+set.seed(1234)
+sample.tr <-sample(1:nrow(policeDataTest),as.integer(splitVal*nrow(policeDataTest)))
+#train
+policeDataTest[sample.tr, ] 
+#test
+policeDataTest[-sample.tr,] 
+```
+```{r echo = FALSE}
+tr <- policeDataTest[sample.tr, ] 
+ts <- policeDataTest[-sample.tr,] 
+```
+
+Put at least one beat in the training and test dataset to equalize the factors of each dataset.
+
+```{r}
+set.seed(1234) # for reproduction
+sample.tr <-sample(1:nrow(policeDataTest),as.integer(splitVal*nrow(policeDataTest)))
+tr <- policeDataTest[sample.tr, ] #Split into two sets
+ts <- policeDataTest[-sample.tr,] 
+
+Beats <- unique(policeDataTest$Beat)
+
+updateT <- function(ts, BeatsTS) {
+  result <- ts
+  for (beat in BeatsTS)  {
+    if (nrow(ts[ts$Beat == beat,]) == 0) {
+      result <- rbind(result, policeDataTest[policeDataTest$Beat == beat,][1,])
+    }
+  }
+  return(result)
+}
+tr <- updateT(tr, Beats)
+ts <- updateT(ts, Beats)
+
+```
+
+Predict with Multiple Linear Regression.
+
+```{r results='hide', message=FALSE, warning=FALSE}
+model_lm <- lm(n_offenses ~., tr)
+model_lm_final <- step(model_lm)
+preds_lm <- predict(model_lm_final, ts)
+```
+
+Predict with Tree Based Model
+
+```{r }
+model_tree <- rpartXse(n_offenses ~ .,tr)
+preds_tree <- predict(model_tree,ts)
+```
+
+Predict with Support Vector Machines
+
+```{r}
+model_svm <- svm(n_offenses ~., tr)
+preds_svm <- predict(model_svm,ts)
+```
+
+Predict with Neural Networks
+
+```{r results='hide', message=FALSE, warning=FALSE}
+model_nn <- nnet(n_offenses ~., tr, size=5, decay=0.1, maxit=1000)
+preds_nn <- predict(model_nn,ts)
+```
+
+Predict with Multivariate Adaptive Regression Splines
+
+```{r}
+model_mars <- earth(n_offenses ~., tr)
+preds_mars <- predict(model_mars, ts)
+```
+
+Compute the errors of each prediction
+
+Error of Multiple Linear Regression.
+
+```{r}
+regr.eval(ts$n_offenses, preds_lm, train.y=tr$n_offenses)
+```
+
+Error of Tree Based Model
+
+```{r}
+regr.eval(ts$n_offenses, preds_tree, train.y=tr$n_offenses)
+```
+
+Error of Support Vector Machines
+
+```{r}
+regr.eval(ts$n_offenses, preds_svm, train.y=tr$n_offenses)
+```
+
+Error of Neural Networks
+
+```{r}
+regr.eval(ts$n_offenses, preds_nn, train.y=tr$n_offenses)
+```
+
+Error of Multivariate Adaptive Regression Splines
+
+```{r}
+regr.eval(ts$n_offenses, preds_mars, train.y=tr$n_offenses)
+```
+
+As you can see, the Neural Network Prediction has the smaller error. So, we are going to use it to create the time table for the police.
+
+```{r}
+timeTablePolice<-matrix(nrow=116*7*3, ncol=4)
+beats=unique(policeDataTest$Beat)
+days=unique(policeDataTest$wday)
+shift=unique(policeDataTest$shift)
+predi<-ts[1,]
+predicted=0
+c=0
+
+for(i in 1:2436){
+  
+  timeTablePolice[i,1]= as.character(beats[ceiling(i/21)])
+  predi$Beat=beats[ceiling(i/21)]
+  
+  c=ceiling(i/3)%%7
+  if(c==0){timeTablePolice[i,2]=as.character(days[7])
+  predi$wday=days[7]
+  }
+  else{
+    timeTablePolice[i,2]=as.character(days[c])#ceiling(i/7)%%7#as.character(days[ceiling(i%%7])}
+    predi$wday=days[c]
+  }
+  if(i%%3==0){
+    timeTablePolice[i,3]=as.character(shift[3])
+    predi$shift=shift[3]
+  }else{
+    timeTablePolice[i,3]=as.character(shift[i%%3])
+    predi$shift=shift[i%%3]
+  }
+  
+  predi$n_offenses=NA
+  predicted<-predict(model_nn,predi)
+  timeTablePolice[i,4]=predicted
+}
+summary(timeTablePolice)
+```
+
